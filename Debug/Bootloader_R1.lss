@@ -1,0 +1,634 @@
+
+Bootloader_R1.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000002d8  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000110  00800060  000002d8  0000036c  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000006  00800170  00800170  0000047c  2**0
+                  ALLOC
+  3 .stab         00001020  00000000  00000000  0000047c  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  4 .stabstr      000012fe  00000000  00000000  0000149c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+   8:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+   c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  10:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  14:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  18:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  1c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  20:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  24:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  28:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  2c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  30:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  34:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  38:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  3c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  40:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  44:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  48:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  4c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+  50:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_copy_data>:
+  60:	11 e0       	ldi	r17, 0x01	; 1
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	e8 ed       	ldi	r30, 0xD8	; 216
+  68:	f2 e0       	ldi	r31, 0x02	; 2
+  6a:	02 c0       	rjmp	.+4      	; 0x70 <.do_copy_data_start>
+
+0000006c <.do_copy_data_loop>:
+  6c:	05 90       	lpm	r0, Z+
+  6e:	0d 92       	st	X+, r0
+
+00000070 <.do_copy_data_start>:
+  70:	a0 37       	cpi	r26, 0x70	; 112
+  72:	b1 07       	cpc	r27, r17
+  74:	d9 f7       	brne	.-10     	; 0x6c <.do_copy_data_loop>
+
+00000076 <__do_clear_bss>:
+  76:	11 e0       	ldi	r17, 0x01	; 1
+  78:	a0 e7       	ldi	r26, 0x70	; 112
+  7a:	b1 e0       	ldi	r27, 0x01	; 1
+  7c:	01 c0       	rjmp	.+2      	; 0x80 <.do_clear_bss_start>
+
+0000007e <.do_clear_bss_loop>:
+  7e:	1d 92       	st	X+, r1
+
+00000080 <.do_clear_bss_start>:
+  80:	a6 37       	cpi	r26, 0x76	; 118
+  82:	b1 07       	cpc	r27, r17
+  84:	e1 f7       	brne	.-8      	; 0x7e <.do_clear_bss_loop>
+  86:	0e 94 05 01 	call	0x20a	; 0x20a <main>
+  8a:	0c 94 6a 01 	jmp	0x2d4	; 0x2d4 <_exit>
+
+0000008e <__bad_interrupt>:
+  8e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000092 <boot_program_page>:
+	}
+}
+
+
+void boot_program_page(u8 copy_u16PageID, u8* ptr_u8DataBuffer)
+{
+  92:	1f 93       	push	r17
+  94:	cf 93       	push	r28
+  96:	df 93       	push	r29
+  98:	98 2f       	mov	r25, r24
+  9a:	db 01       	movw	r26, r22
+	u32 u32PageAddress = copy_u16PageID*128;
+	boot_spm_interrupt_disable();
+  9c:	87 b7       	in	r24, 0x37	; 55
+  9e:	8f 77       	andi	r24, 0x7F	; 127
+  a0:	87 bf       	out	0x37, r24	; 55
+    boot_page_erase_safe(u32PageAddress);
+  a2:	07 b6       	in	r0, 0x37	; 55
+  a4:	00 fc       	sbrc	r0, 0
+  a6:	fd cf       	rjmp	.-6      	; 0xa2 <boot_program_page+0x10>
+  a8:	e1 99       	sbic	0x1c, 1	; 28
+  aa:	fe cf       	rjmp	.-4      	; 0xa8 <boot_program_page+0x16>
+  ac:	49 2f       	mov	r20, r25
+  ae:	50 e0       	ldi	r21, 0x00	; 0
+  b0:	56 95       	lsr	r21
+  b2:	54 2f       	mov	r21, r20
+  b4:	44 27       	eor	r20, r20
+  b6:	57 95       	ror	r21
+  b8:	47 95       	ror	r20
+  ba:	83 e0       	ldi	r24, 0x03	; 3
+  bc:	fa 01       	movw	r30, r20
+  be:	80 93 57 00 	sts	0x0057, r24
+  c2:	e8 95       	spm
+  c4:	fa 01       	movw	r30, r20
+    for (u16 i= 0; i< 128; i+=2)
+    {
+        // Set up little-endian word.
+    	u16 word = *ptr_u8DataBuffer++;
+    	word += (*ptr_u8DataBuffer++) << 8;
+        boot_page_fill_safe(u32PageAddress + i, word);
+  c6:	11 e0       	ldi	r17, 0x01	; 1
+{
+	u32 u32PageAddress = copy_u16PageID*128;
+	boot_spm_interrupt_disable();
+    boot_page_erase_safe(u32PageAddress);
+
+    for (u16 i= 0; i< 128; i+=2)
+  c8:	ba 01       	movw	r22, r20
+  ca:	60 58       	subi	r22, 0x80	; 128
+  cc:	7f 4f       	sbci	r23, 0xFF	; 255
+    {
+        // Set up little-endian word.
+    	u16 word = *ptr_u8DataBuffer++;
+  ce:	9c 91       	ld	r25, X
+    	word += (*ptr_u8DataBuffer++) << 8;
+  d0:	11 96       	adiw	r26, 0x01	; 1
+  d2:	8c 91       	ld	r24, X
+  d4:	11 97       	sbiw	r26, 0x01	; 1
+	}
+}
+
+
+void boot_program_page(u8 copy_u16PageID, u8* ptr_u8DataBuffer)
+{
+  d6:	12 96       	adiw	r26, 0x02	; 2
+    for (u16 i= 0; i< 128; i+=2)
+    {
+        // Set up little-endian word.
+    	u16 word = *ptr_u8DataBuffer++;
+    	word += (*ptr_u8DataBuffer++) << 8;
+        boot_page_fill_safe(u32PageAddress + i, word);
+  d8:	07 b6       	in	r0, 0x37	; 55
+  da:	00 fc       	sbrc	r0, 0
+  dc:	fd cf       	rjmp	.-6      	; 0xd8 <boot_program_page+0x46>
+  de:	e1 99       	sbic	0x1c, 1	; 28
+  e0:	fe cf       	rjmp	.-4      	; 0xde <boot_program_page+0x4c>
+  e2:	38 2f       	mov	r19, r24
+  e4:	20 e0       	ldi	r18, 0x00	; 0
+  e6:	e9 01       	movw	r28, r18
+  e8:	c9 0f       	add	r28, r25
+  ea:	d1 1d       	adc	r29, r1
+  ec:	0e 01       	movw	r0, r28
+  ee:	10 93 57 00 	sts	0x0057, r17
+  f2:	e8 95       	spm
+  f4:	11 24       	eor	r1, r1
+  f6:	32 96       	adiw	r30, 0x02	; 2
+{
+	u32 u32PageAddress = copy_u16PageID*128;
+	boot_spm_interrupt_disable();
+    boot_page_erase_safe(u32PageAddress);
+
+    for (u16 i= 0; i< 128; i+=2)
+  f8:	e6 17       	cp	r30, r22
+  fa:	f7 07       	cpc	r31, r23
+  fc:	41 f7       	brne	.-48     	; 0xce <boot_program_page+0x3c>
+    	word += (*ptr_u8DataBuffer++) << 8;
+        boot_page_fill_safe(u32PageAddress + i, word);
+    }
+
+    // Store buffer in flash page.
+    boot_page_write_safe(u32PageAddress);
+  fe:	07 b6       	in	r0, 0x37	; 55
+ 100:	00 fc       	sbrc	r0, 0
+ 102:	fd cf       	rjmp	.-6      	; 0xfe <boot_program_page+0x6c>
+ 104:	e1 99       	sbic	0x1c, 1	; 28
+ 106:	fe cf       	rjmp	.-4      	; 0x104 <boot_program_page+0x72>
+ 108:	85 e0       	ldi	r24, 0x05	; 5
+ 10a:	fa 01       	movw	r30, r20
+ 10c:	80 93 57 00 	sts	0x0057, r24
+ 110:	e8 95       	spm
+
+    // Reenable RWW-section again. We need this if we want to jump back
+    boot_rww_enable ();
+ 112:	81 e1       	ldi	r24, 0x11	; 17
+ 114:	80 93 57 00 	sts	0x0057, r24
+ 118:	e8 95       	spm
+}
+ 11a:	df 91       	pop	r29
+ 11c:	cf 91       	pop	r28
+ 11e:	1f 91       	pop	r17
+ 120:	08 95       	ret
+
+00000122 <Boot_init>:
+	App_updateReq
+}Boot_varsion_loc;
+
+
+void Boot_init( void )
+{
+ 122:	ef 92       	push	r14
+ 124:	ff 92       	push	r15
+ 126:	0f 93       	push	r16
+ 128:	1f 93       	push	r17
+ 12a:	df 93       	push	r29
+ 12c:	cf 93       	push	r28
+ 12e:	0f 92       	push	r0
+ 130:	cd b7       	in	r28, 0x3d	; 61
+ 132:	de b7       	in	r29, 0x3e	; 62
+	u8 EEP_Data = 0;
+ 134:	19 82       	std	Y+1, r1	; 0x01
+	UART_vInit();
+ 136:	0e 94 22 01 	call	0x244	; 0x244 <UART_vInit>
+	#if USE_INT==1
+	GI_Enable();
+	GI_vRelocateVectorTable(APP_BLD);
+	#else
+	GI_Disable();
+ 13a:	0e 94 42 01 	call	0x284	; 0x284 <GI_Disable>
+	#endif
+	EEP_vReadByte(Boot_indecator, &EEP_Data);
+ 13e:	80 e0       	ldi	r24, 0x00	; 0
+ 140:	90 e0       	ldi	r25, 0x00	; 0
+ 142:	7e 01       	movw	r14, r28
+ 144:	08 94       	sec
+ 146:	e1 1c       	adc	r14, r1
+ 148:	f1 1c       	adc	r15, r1
+ 14a:	b7 01       	movw	r22, r14
+ 14c:	0e 94 5a 01 	call	0x2b4	; 0x2b4 <EEP_vReadByte>
+	if(EEP_Data == BootVersion[0])
+ 150:	89 81       	ldd	r24, Y+1	; 0x01
+ 152:	80 38       	cpi	r24, 0x80	; 128
+ 154:	29 f5       	brne	.+74     	; 0x1a0 <Boot_init+0x7e>
+ 156:	00 e0       	ldi	r16, 0x00	; 0
+ 158:	10 e0       	ldi	r17, 0x00	; 0
+	{
+		for(u8 i= 0; i< 15;i++)
+		{
+			UART_vSendByte(BootStarting[i]);
+ 15a:	f8 01       	movw	r30, r16
+ 15c:	e0 5a       	subi	r30, 0xA0	; 160
+ 15e:	fe 4f       	sbci	r31, 0xFE	; 254
+ 160:	80 81       	ld	r24, Z
+ 162:	0e 94 34 01 	call	0x268	; 0x268 <UART_vSendByte>
+			if(i == 11)
+ 166:	0b 30       	cpi	r16, 0x0B	; 11
+ 168:	19 f4       	brne	.+6      	; 0x170 <Boot_init+0x4e>
+			{
+				// Release
+				EEP_vReadByte(Boot_release, &EEP_Data);
+ 16a:	81 e0       	ldi	r24, 0x01	; 1
+ 16c:	90 e0       	ldi	r25, 0x00	; 0
+ 16e:	09 c0       	rjmp	.+18     	; 0x182 <Boot_init+0x60>
+				UART_vSendByte(EEP_Data+'0');
+			}
+			else if(i == 13)
+ 170:	0d 30       	cpi	r16, 0x0D	; 13
+ 172:	19 f4       	brne	.+6      	; 0x17a <Boot_init+0x58>
+			{
+				// Version
+				EEP_vReadByte(Boot_version, &EEP_Data);
+ 174:	82 e0       	ldi	r24, 0x02	; 2
+ 176:	90 e0       	ldi	r25, 0x00	; 0
+ 178:	04 c0       	rjmp	.+8      	; 0x182 <Boot_init+0x60>
+				UART_vSendByte(EEP_Data+'0');
+			}
+			else if(i == 14)
+ 17a:	0e 30       	cpi	r16, 0x0E	; 14
+ 17c:	49 f4       	brne	.+18     	; 0x190 <Boot_init+0x6e>
+			{
+				// Sub version
+				EEP_vReadByte(Boot_subversion, &EEP_Data);
+ 17e:	83 e0       	ldi	r24, 0x03	; 3
+ 180:	90 e0       	ldi	r25, 0x00	; 0
+ 182:	b7 01       	movw	r22, r14
+ 184:	0e 94 5a 01 	call	0x2b4	; 0x2b4 <EEP_vReadByte>
+				UART_vSendByte(EEP_Data+'0');
+ 188:	89 81       	ldd	r24, Y+1	; 0x01
+ 18a:	80 5d       	subi	r24, 0xD0	; 208
+ 18c:	0e 94 34 01 	call	0x268	; 0x268 <UART_vSendByte>
+ 190:	0f 5f       	subi	r16, 0xFF	; 255
+ 192:	1f 4f       	sbci	r17, 0xFF	; 255
+	GI_Disable();
+	#endif
+	EEP_vReadByte(Boot_indecator, &EEP_Data);
+	if(EEP_Data == BootVersion[0])
+	{
+		for(u8 i= 0; i< 15;i++)
+ 194:	0f 30       	cpi	r16, 0x0F	; 15
+ 196:	11 05       	cpc	r17, r1
+ 198:	01 f7       	brne	.-64     	; 0x15a <Boot_init+0x38>
+ 19a:	04 e0       	ldi	r16, 0x04	; 4
+ 19c:	10 e0       	ldi	r17, 0x00	; 0
+ 19e:	18 c0       	rjmp	.+48     	; 0x1d0 <Boot_init+0xae>
+			}
+		}
+	}
+	else
+	{
+		UART_vSendByte(0x80);
+ 1a0:	80 e8       	ldi	r24, 0x80	; 128
+ 1a2:	0e 94 34 01 	call	0x268	; 0x268 <UART_vSendByte>
+		for(u8 i= 0; i<= 3; i++)
+		{
+			EEP_vWriteByte(i, BootVersion[i]);
+ 1a6:	80 e0       	ldi	r24, 0x00	; 0
+ 1a8:	90 e0       	ldi	r25, 0x00	; 0
+ 1aa:	60 e8       	ldi	r22, 0x80	; 128
+ 1ac:	0e 94 47 01 	call	0x28e	; 0x28e <EEP_vWriteByte>
+ 1b0:	81 e0       	ldi	r24, 0x01	; 1
+ 1b2:	90 e0       	ldi	r25, 0x00	; 0
+ 1b4:	61 e0       	ldi	r22, 0x01	; 1
+ 1b6:	0e 94 47 01 	call	0x28e	; 0x28e <EEP_vWriteByte>
+ 1ba:	82 e0       	ldi	r24, 0x02	; 2
+ 1bc:	90 e0       	ldi	r25, 0x00	; 0
+ 1be:	61 e0       	ldi	r22, 0x01	; 1
+ 1c0:	0e 94 47 01 	call	0x28e	; 0x28e <EEP_vWriteByte>
+ 1c4:	83 e0       	ldi	r24, 0x03	; 3
+ 1c6:	90 e0       	ldi	r25, 0x00	; 0
+ 1c8:	60 e0       	ldi	r22, 0x00	; 0
+ 1ca:	0e 94 47 01 	call	0x28e	; 0x28e <EEP_vWriteByte>
+ 1ce:	e5 cf       	rjmp	.-54     	; 0x19a <Boot_init+0x78>
+	}
+
+
+	for(u8 i= 0; i< 5; i++)
+	{
+		EEP_vReadByte(App_indecator+i, &AppVersion[i]);
+ 1d0:	b8 01       	movw	r22, r16
+ 1d2:	64 59       	subi	r22, 0x94	; 148
+ 1d4:	7e 4f       	sbci	r23, 0xFE	; 254
+ 1d6:	c8 01       	movw	r24, r16
+ 1d8:	0e 94 5a 01 	call	0x2b4	; 0x2b4 <EEP_vReadByte>
+ 1dc:	0f 5f       	subi	r16, 0xFF	; 255
+ 1de:	1f 4f       	sbci	r17, 0xFF	; 255
+			EEP_vWriteByte(i, BootVersion[i]);
+		}
+	}
+
+
+	for(u8 i= 0; i< 5; i++)
+ 1e0:	09 30       	cpi	r16, 0x09	; 9
+ 1e2:	11 05       	cpc	r17, r1
+ 1e4:	a9 f7       	brne	.-22     	; 0x1d0 <Boot_init+0xae>
+	{
+		EEP_vReadByte(App_indecator+i, &AppVersion[i]);
+	}
+
+
+	if( (AppVersion[0] == 0x55) && (AppVersion[4] != 0xAA))
+ 1e6:	80 91 70 01 	lds	r24, 0x0170
+ 1ea:	85 35       	cpi	r24, 0x55	; 85
+ 1ec:	31 f4       	brne	.+12     	; 0x1fa <Boot_init+0xd8>
+ 1ee:	80 91 74 01 	lds	r24, 0x0174
+ 1f2:	8a 3a       	cpi	r24, 0xAA	; 170
+ 1f4:	11 f0       	breq	.+4      	; 0x1fa <Boot_init+0xd8>
+	{
+		#if USE_INT==1
+		GI_Disable();
+		GI_vRelocateVectorTable(APP_LOC);
+		#endif
+		asm("jmp 0");
+ 1f6:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+	}
+}
+ 1fa:	0f 90       	pop	r0
+ 1fc:	cf 91       	pop	r28
+ 1fe:	df 91       	pop	r29
+ 200:	1f 91       	pop	r17
+ 202:	0f 91       	pop	r16
+ 204:	ff 90       	pop	r15
+ 206:	ef 90       	pop	r14
+ 208:	08 95       	ret
+
+0000020a <main>:
+			0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+			0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+		   };
+
+int main( void )
+{
+ 20a:	0f 93       	push	r16
+ 20c:	1f 93       	push	r17
+	Boot_init();
+ 20e:	0e 94 91 00 	call	0x122	; 0x122 <Boot_init>
+
+	for(u16 i= 0; i<= NO_OF_PAGES; i++)
+	{
+		boot_program_page(i, &APP[i+PAGE_SIZE]);
+ 212:	00 ee       	ldi	r16, 0xE0	; 224
+ 214:	10 e0       	ldi	r17, 0x00	; 0
+ 216:	80 e0       	ldi	r24, 0x00	; 0
+ 218:	b8 01       	movw	r22, r16
+ 21a:	0e 94 49 00 	call	0x92	; 0x92 <boot_program_page>
+ 21e:	0f 5f       	subi	r16, 0xFF	; 255
+ 220:	1f 4f       	sbci	r17, 0xFF	; 255
+ 222:	81 e0       	ldi	r24, 0x01	; 1
+ 224:	b8 01       	movw	r22, r16
+ 226:	0e 94 49 00 	call	0x92	; 0x92 <boot_program_page>
+ 22a:	0f 5f       	subi	r16, 0xFF	; 255
+ 22c:	1f 4f       	sbci	r17, 0xFF	; 255
+ 22e:	82 e0       	ldi	r24, 0x02	; 2
+ 230:	b8 01       	movw	r22, r16
+ 232:	0e 94 49 00 	call	0x92	; 0x92 <boot_program_page>
+
+	#if USE_INT==1
+	GI_Disable();
+	GI_vRelocateVectorTable(APP_LOC);
+	#endif
+	asm("jmp 0");
+ 236:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+}
+ 23a:	80 e0       	ldi	r24, 0x00	; 0
+ 23c:	90 e0       	ldi	r25, 0x00	; 0
+ 23e:	1f 91       	pop	r17
+ 240:	0f 91       	pop	r16
+ 242:	08 95       	ret
+
+00000244 <UART_vInit>:
+void UART_vInit( void ){
+	/*
+	 *
+	 */
+	// Set the buad rate
+	UART_UBRRH = UART_UBRRH_val;
+ 244:	10 bc       	out	0x20, r1	; 32
+	UART_UBRRL = UART_UBRRL_val;
+ 246:	83 e3       	ldi	r24, 0x33	; 51
+ 248:	89 b9       	out	0x09, r24	; 9
+
+
+	// Configure the control and status register
+	UART_UCSRB = ((UART_RXIE << UART_UCSRB_RXCIE) | (UART_TXIE << UART_UCSRB_TXCIE) | (UART_disable << UART_UCSRB_UDRIE) | (UART_enable << UART_UCSRB_RXEN) | (UART_enable << UART_UCSRB_TXEN) | (UART_disable << UART_UCSRB_UCSZ2) | (UART_disable));
+ 24a:	88 e1       	ldi	r24, 0x18	; 24
+ 24c:	8a b9       	out	0x0a, r24	; 10
+	UART_UCSRC = (UART_UCSRC_mask | (UART_disable << UART_UCSRC_UMSEL) | (UART_parity_mode << UART_UCSRC_UPM) | (UART_disable << UART_UCSRC_USBS) | (UART_UCSZ_val << UART_UCSRC_UCSZ) | (UART_disable << UART_UCSRC_UCPOL));
+ 24e:	86 e8       	ldi	r24, 0x86	; 134
+ 250:	80 bd       	out	0x20, r24	; 32
+}
+ 252:	08 95       	ret
+
+00000254 <UART_u8IfTxAvaulable>:
+
+u8 UART_u8IfTxAvaulable( void ){
+	/*
+	 *
+	 */
+	return get_bit(UART_UCSRA, UART_UCSRA_UDRE);
+ 254:	8b b1       	in	r24, 0x0b	; 11
+ 256:	82 95       	swap	r24
+ 258:	86 95       	lsr	r24
+}
+ 25a:	81 70       	andi	r24, 0x01	; 1
+ 25c:	08 95       	ret
+
+0000025e <UART_u8IfRxAvaulable>:
+u8 UART_u8IfRxAvaulable( void )
+{
+	/*
+	 *
+	 */
+	return get_bit(UART_UCSRA, UART_UCSRA_RXC);
+ 25e:	8b b1       	in	r24, 0x0b	; 11
+}
+ 260:	88 1f       	adc	r24, r24
+ 262:	88 27       	eor	r24, r24
+ 264:	88 1f       	adc	r24, r24
+ 266:	08 95       	ret
+
+00000268 <UART_vSendByte>:
+
+void UART_vSendByte( u8 copy_data_byte ){
+	/*
+	 *
+	 */
+	while(UART_u8IfTxAvaulable() == 0);
+ 268:	5d 9b       	sbis	0x0b, 5	; 11
+ 26a:	fe cf       	rjmp	.-4      	; 0x268 <UART_vSendByte>
+	UART_UDR = copy_data_byte;
+ 26c:	8c b9       	out	0x0c, r24	; 12
+}
+ 26e:	08 95       	ret
+
+00000270 <UART_vReceiveByte>:
+
+void UART_vReceiveByte( u8* ptr_data_byte )
+{
+ 270:	fc 01       	movw	r30, r24
+	/*
+	 *
+	 */
+	while(UART_u8IfRxAvaulable() == 0);
+ 272:	5f 9b       	sbis	0x0b, 7	; 11
+ 274:	fe cf       	rjmp	.-4      	; 0x272 <UART_vReceiveByte+0x2>
+	*ptr_data_byte = UART_UDR;
+ 276:	8c b1       	in	r24, 0x0c	; 12
+ 278:	80 83       	st	Z, r24
+}
+ 27a:	08 95       	ret
+
+0000027c <GI_Enable>:
+
+/******************************************************************************/
+/* Functions implementation section */
+void GI_Enable( void )
+{
+	set_bit(GI_SREG, GI_BIT);
+ 27c:	8f b7       	in	r24, 0x3f	; 63
+ 27e:	80 68       	ori	r24, 0x80	; 128
+ 280:	8f bf       	out	0x3f, r24	; 63
+}
+ 282:	08 95       	ret
+
+00000284 <GI_Disable>:
+
+
+void GI_Disable( void )
+{
+	clr_bit(GI_SREG, GI_BIT);
+ 284:	8f b7       	in	r24, 0x3f	; 63
+ 286:	8f 77       	andi	r24, 0x7F	; 127
+ 288:	8f bf       	out	0x3f, r24	; 63
+}
+ 28a:	08 95       	ret
+
+0000028c <GI_vRelocateVectorTable>:
+
+void GI_vRelocateVectorTable( u8 Copy_u8Location )
+{
+
+}
+ 28c:	08 95       	ret
+
+0000028e <EEP_vWriteByte>:
+// EEPROM write data on specific location
+u8 EEP_vWriteByte(u16 copy_u16WriteAddress, u8 copy_u8DataByte){
+	/*
+	 *
+	 */
+	if(copy_u16WriteAddress <= EEP_max_add)
+ 28e:	24 e0       	ldi	r18, 0x04	; 4
+ 290:	80 30       	cpi	r24, 0x00	; 0
+ 292:	92 07       	cpc	r25, r18
+ 294:	10 f0       	brcs	.+4      	; 0x29a <EEP_vWriteByte+0xc>
+ 296:	80 e0       	ldi	r24, 0x00	; 0
+ 298:	08 95       	ret
+	{
+		EEP_EEAR = copy_u16WriteAddress;
+ 29a:	9f bb       	out	0x1f, r25	; 31
+ 29c:	8e bb       	out	0x1e, r24	; 30
+		EEP_EEDR = copy_u8DataByte;
+ 29e:	6d bb       	out	0x1d, r22	; 29
+		while( get_bit(EEP_EECR, EEP_EEWE) == EEP_HIGH );
+ 2a0:	e1 99       	sbic	0x1c, 1	; 28
+ 2a2:	fe cf       	rjmp	.-4      	; 0x2a0 <EEP_vWriteByte+0x12>
+		set_bit(EEP_EECR, EEP_EEMWE);
+ 2a4:	e2 9a       	sbi	0x1c, 2	; 28
+		set_bit(EEP_EECR, EEP_EEWE);
+ 2a6:	e1 9a       	sbi	0x1c, 1	; 28
+    milliseconds can be achieved.
+ */
+void
+_delay_loop_2(uint16_t __count)
+{
+	__asm__ volatile (
+ 2a8:	80 e2       	ldi	r24, 0x20	; 32
+ 2aa:	9e e4       	ldi	r25, 0x4E	; 78
+ 2ac:	01 97       	sbiw	r24, 0x01	; 1
+ 2ae:	f1 f7       	brne	.-4      	; 0x2ac <EEP_vWriteByte+0x1e>
+ 2b0:	81 e0       	ldi	r24, 0x01	; 1
+	}
+	else
+	{
+		return STD_FALSE;
+	}
+}
+ 2b2:	08 95       	ret
+
+000002b4 <EEP_vReadByte>:
+
+// EEPROM read data from specific location
+u8 EEP_vReadByte(u16 copyu16ReadAddress, u8* ptr_u8DataByte){
+ 2b4:	fb 01       	movw	r30, r22
+	/*
+	 *
+	 */
+	if(copyu16ReadAddress <= EEP_max_add)
+ 2b6:	24 e0       	ldi	r18, 0x04	; 4
+ 2b8:	80 30       	cpi	r24, 0x00	; 0
+ 2ba:	92 07       	cpc	r25, r18
+ 2bc:	10 f0       	brcs	.+4      	; 0x2c2 <EEP_vReadByte+0xe>
+ 2be:	80 e0       	ldi	r24, 0x00	; 0
+ 2c0:	08 95       	ret
+	{
+		EEP_EEAR = copyu16ReadAddress;
+ 2c2:	9f bb       	out	0x1f, r25	; 31
+ 2c4:	8e bb       	out	0x1e, r24	; 30
+		while((get_bit(EEP_EECR, EEP_EEWE) == EEP_HIGH));
+ 2c6:	e1 99       	sbic	0x1c, 1	; 28
+ 2c8:	fe cf       	rjmp	.-4      	; 0x2c6 <EEP_vReadByte+0x12>
+		set_bit(EEP_EECR, EEP_EERE);
+ 2ca:	e0 9a       	sbi	0x1c, 0	; 28
+		*ptr_u8DataByte = EEP_EEDR;
+ 2cc:	8d b3       	in	r24, 0x1d	; 29
+ 2ce:	80 83       	st	Z, r24
+ 2d0:	81 e0       	ldi	r24, 0x01	; 1
+	}
+	else
+	{
+		return STD_FALSE;
+	}
+}
+ 2d2:	08 95       	ret
+
+000002d4 <_exit>:
+ 2d4:	f8 94       	cli
+
+000002d6 <__stop_program>:
+ 2d6:	ff cf       	rjmp	.-2      	; 0x2d6 <__stop_program>
