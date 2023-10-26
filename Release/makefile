@@ -13,6 +13,7 @@ RM := rm -rf
 -include Drivers/MCAL/UART/subdir.mk
 -include Drivers/MCAL/GI/subdir.mk
 -include Drivers/MCAL/EEP/subdir.mk
+-include Drivers/MCAL/DIO/subdir.mk
 -include subdir.mk
 -include objects.mk
 

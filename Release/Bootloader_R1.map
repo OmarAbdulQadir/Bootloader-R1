@@ -3,7 +3,7 @@ Archive member included because of file (symbol)
 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
                               e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o (exit)
 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
-                              ./Src/Boot.o (__do_copy_data)
+                              ./Drivers/MCAL/DIO/DIO_program.o (__do_copy_data)
 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
                               ./Src/Boot.o (__do_clear_bss)
 
@@ -32,6 +32,7 @@ LOAD ./Drivers/MCAL/WDT/WDT_program.o
 LOAD ./Drivers/MCAL/UART/UART_program.o
 LOAD ./Drivers/MCAL/GI/GI_program.o
 LOAD ./Drivers/MCAL/EEP/EEP_program.o
+LOAD ./Drivers/MCAL/DIO/DIO_program.o
 LOAD e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
 LOAD e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a
 LOAD e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
@@ -127,7 +128,7 @@ Address of section .text set to 0x7000
 .rela.plt
  *(.rela.plt)
 
-.text           0x00007000      0x586
+.text           0x00007000      0x6ee
  *(.vectors)
  .vectors       0x00007000       0x54 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
                 0x00007000                __vectors
@@ -208,6 +209,7 @@ Address of section .text set to 0x7000
  .text          0x00007092        0x0 ./Drivers/MCAL/UART/UART_program.o
  .text          0x00007092        0x0 ./Drivers/MCAL/GI/GI_program.o
  .text          0x00007092        0x0 ./Drivers/MCAL/EEP/EEP_program.o
+ .text          0x00007092        0x0 ./Drivers/MCAL/DIO/DIO_program.o
  .text          0x00007092        0x0 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
  .text          0x00007092        0x0 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
  .text          0x00007092        0x0 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
@@ -220,69 +222,90 @@ Address of section .text set to 0x7000
                 0x00007128       0x5e ./Src/Boot.o
                 0x00007128                Boot_vRxCallback
  .text.Boot_vMainTask
-                0x00007186      0x12e ./Src/Boot.o
+                0x00007186      0x1a0 ./Src/Boot.o
                 0x00007186                Boot_vMainTask
  .text.Boot_init
-                0x000072b4      0x13c ./Src/Boot.o
-                0x000072b4                Boot_init
- .text.main     0x000073f0       0x22 ./Src/main.o
-                0x000073f0                main
+                0x00007326       0x4a ./Src/Boot.o
+                0x00007326                Boot_init
+ .text.main     0x00007370       0x70 ./Src/main.o
+                0x00007370                main
  .text.WDT_void_start
-                0x00007412        0xa ./Drivers/MCAL/WDT/WDT_program.o
-                0x00007412                WDT_void_start
+                0x000073e0        0xa ./Drivers/MCAL/WDT/WDT_program.o
+                0x000073e0                WDT_void_start
  .text.WDT_void_stop
-                0x0000741c        0x8 ./Drivers/MCAL/WDT/WDT_program.o
-                0x0000741c                WDT_void_stop
+                0x000073ea        0x8 ./Drivers/MCAL/WDT/WDT_program.o
+                0x000073ea                WDT_void_stop
  .text.UART_vInit
-                0x00007424       0x10 ./Drivers/MCAL/UART/UART_program.o
-                0x00007424                UART_vInit
+                0x000073f2       0x10 ./Drivers/MCAL/UART/UART_program.o
+                0x000073f2                UART_vInit
  .text.UART_u8IfTxAvaulable
-                0x00007434        0xa ./Drivers/MCAL/UART/UART_program.o
-                0x00007434                UART_u8IfTxAvaulable
+                0x00007402        0xa ./Drivers/MCAL/UART/UART_program.o
+                0x00007402                UART_u8IfTxAvaulable
  .text.UART_u8IfRxAvaulable
-                0x0000743e        0xa ./Drivers/MCAL/UART/UART_program.o
-                0x0000743e                UART_u8IfRxAvaulable
+                0x0000740c        0xa ./Drivers/MCAL/UART/UART_program.o
+                0x0000740c                UART_u8IfRxAvaulable
  .text.UART_vSendByte
-                0x00007448        0x8 ./Drivers/MCAL/UART/UART_program.o
-                0x00007448                UART_vSendByte
+                0x00007416        0x8 ./Drivers/MCAL/UART/UART_program.o
+                0x00007416                UART_vSendByte
  .text.UART_vReceiveByte
-                0x00007450        0xc ./Drivers/MCAL/UART/UART_program.o
-                0x00007450                UART_vReceiveByte
+                0x0000741e        0xc ./Drivers/MCAL/UART/UART_program.o
+                0x0000741e                UART_vReceiveByte
  .text.UART_vSetRxCallback
-                0x0000745c        0xa ./Drivers/MCAL/UART/UART_program.o
-                0x0000745c                UART_vSetRxCallback
+                0x0000742a        0xa ./Drivers/MCAL/UART/UART_program.o
+                0x0000742a                UART_vSetRxCallback
  .text.__vector_13
-                0x00007466       0x54 ./Drivers/MCAL/UART/UART_program.o
-                0x00007466                __vector_13
+                0x00007434       0x54 ./Drivers/MCAL/UART/UART_program.o
+                0x00007434                __vector_13
  .text.UART_vSetTxCallback
-                0x000074ba        0xa ./Drivers/MCAL/UART/UART_program.o
-                0x000074ba                UART_vSetTxCallback
+                0x00007488        0xa ./Drivers/MCAL/UART/UART_program.o
+                0x00007488                UART_vSetTxCallback
  .text.__vector_15
-                0x000074c4       0x52 ./Drivers/MCAL/UART/UART_program.o
-                0x000074c4                __vector_15
+                0x00007492       0x52 ./Drivers/MCAL/UART/UART_program.o
+                0x00007492                __vector_15
  .text.GI_Enable
-                0x00007516        0x8 ./Drivers/MCAL/GI/GI_program.o
-                0x00007516                GI_Enable
+                0x000074e4        0x8 ./Drivers/MCAL/GI/GI_program.o
+                0x000074e4                GI_Enable
  .text.GI_Disable
-                0x0000751e        0x8 ./Drivers/MCAL/GI/GI_program.o
-                0x0000751e                GI_Disable
+                0x000074ec        0x8 ./Drivers/MCAL/GI/GI_program.o
+                0x000074ec                GI_Disable
  .text.GI_vRelocateIVT
-                0x00007526       0x16 ./Drivers/MCAL/GI/GI_program.o
-                0x00007526                GI_vRelocateIVT
+                0x000074f4       0x16 ./Drivers/MCAL/GI/GI_program.o
+                0x000074f4                GI_vRelocateIVT
  .text.EEP_vWriteByte
-                0x0000753c       0x26 ./Drivers/MCAL/EEP/EEP_program.o
-                0x0000753c                EEP_vWriteByte
+                0x0000750a       0x26 ./Drivers/MCAL/EEP/EEP_program.o
+                0x0000750a                EEP_vWriteByte
  .text.EEP_vReadByte
-                0x00007562       0x20 ./Drivers/MCAL/EEP/EEP_program.o
-                0x00007562                EEP_vReadByte
- .text.libgcc   0x00007582        0x0 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
- .text.libgcc   0x00007582        0x0 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
- .text.libgcc   0x00007582        0x0 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
-                0x00007582                . = ALIGN (0x2)
+                0x00007530       0x20 ./Drivers/MCAL/EEP/EEP_program.o
+                0x00007530                EEP_vReadByte
+ .text.DIO_vInit
+                0x00007550        0x8 ./Drivers/MCAL/DIO/DIO_program.o
+                0x00007550                DIO_vInit
+ .text.DIO_vSetPortDirection
+                0x00007558       0x26 ./Drivers/MCAL/DIO/DIO_program.o
+                0x00007558                DIO_vSetPortDirection
+ .text.DIO_vSetPinDirection
+                0x0000757e       0x6e ./Drivers/MCAL/DIO/DIO_program.o
+                0x0000757e                DIO_vSetPinDirection
+ .text.DIO_vSetPortValue
+                0x000075ec       0x26 ./Drivers/MCAL/DIO/DIO_program.o
+                0x000075ec                DIO_vSetPortValue
+ .text.DIO_vSetPinValue
+                0x00007612       0x6e ./Drivers/MCAL/DIO/DIO_program.o
+                0x00007612                DIO_vSetPinValue
+ .text.DIO_u8GetPortValue
+                0x00007680       0x2c ./Drivers/MCAL/DIO/DIO_program.o
+                0x00007680                DIO_u8GetPortValue
+ .text.DIO_u8GetPinValue
+                0x000076ac       0x3e ./Drivers/MCAL/DIO/DIO_program.o
+                0x000076ac                DIO_u8GetPinValue
+ .text.libgcc   0x000076ea        0x0 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .text.libgcc   0x000076ea        0x0 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .text.libgcc   0x000076ea        0x0 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+                0x000076ea                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00007582        0x0 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
-                0x00007582                exit
-                0x00007582                _exit
+ .fini9         0x000076ea        0x0 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+                0x000076ea                exit
+                0x000076ea                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -301,11 +324,11 @@ Address of section .text set to 0x7000
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00007582        0x4 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .fini0         0x000076ea        0x4 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x00007586                _etext = .
+                0x000076ee                _etext = .
 
-.data           0x00800060       0x20 load address 0x00007586
+.data           0x00800060       0x18 load address 0x000076ee
                 0x00800060                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800060        0x0 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
@@ -315,70 +338,75 @@ Address of section .text set to 0x7000
  .data          0x00800060        0x0 ./Drivers/MCAL/UART/UART_program.o
  .data          0x00800060        0x0 ./Drivers/MCAL/GI/GI_program.o
  .data          0x00800060        0x0 ./Drivers/MCAL/EEP/EEP_program.o
+ .data          0x00800060        0x0 ./Drivers/MCAL/DIO/DIO_program.o
  .data          0x00800060        0x0 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
  .data          0x00800060        0x0 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
  .data          0x00800060        0x0 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
  *(.data*)
  *(.rodata)
  *(.rodata*)
- .rodata.BootStarting
-                0x00800060       0x10 ./Src/Boot.o
- .rodata.APPStarting
-                0x00800070       0x10 ./Src/Boot.o
+ .rodata.DIO_PINx_REF
+                0x00800060        0x8 ./Drivers/MCAL/DIO/DIO_program.o
+ .rodata.DIO_PORTx_REF
+                0x00800068        0x8 ./Drivers/MCAL/DIO/DIO_program.o
+ .rodata.DIO_DDRx_REF
+                0x00800070        0x8 ./Drivers/MCAL/DIO/DIO_program.o
  *(.gnu.linkonce.d*)
-                0x00800080                . = ALIGN (0x2)
-                0x00800080                _edata = .
-                0x00800080                PROVIDE (__data_end, .)
+                0x00800078                . = ALIGN (0x2)
+                0x00800078                _edata = .
+                0x00800078                PROVIDE (__data_end, .)
 
-.bss            0x00800080       0x93
-                0x00800080                PROVIDE (__bss_start, .)
+.bss            0x00800078       0x94
+                0x00800078                PROVIDE (__bss_start, .)
  *(.bss)
- .bss           0x00800080        0x0 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
- .bss           0x00800080        0x0 ./Src/Boot.o
- .bss           0x00800080        0x0 ./Src/main.o
- .bss           0x00800080        0x0 ./Drivers/MCAL/WDT/WDT_program.o
- .bss           0x00800080        0x0 ./Drivers/MCAL/UART/UART_program.o
- .bss           0x00800080        0x0 ./Drivers/MCAL/GI/GI_program.o
- .bss           0x00800080        0x0 ./Drivers/MCAL/EEP/EEP_program.o
- .bss           0x00800080        0x0 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
- .bss           0x00800080        0x0 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
- .bss           0x00800080        0x0 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+ .bss           0x00800078        0x0 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
+ .bss           0x00800078        0x0 ./Src/Boot.o
+ .bss           0x00800078        0x0 ./Src/main.o
+ .bss           0x00800078        0x0 ./Drivers/MCAL/WDT/WDT_program.o
+ .bss           0x00800078        0x0 ./Drivers/MCAL/UART/UART_program.o
+ .bss           0x00800078        0x0 ./Drivers/MCAL/GI/GI_program.o
+ .bss           0x00800078        0x0 ./Drivers/MCAL/EEP/EEP_program.o
+ .bss           0x00800078        0x0 ./Drivers/MCAL/DIO/DIO_program.o
+ .bss           0x00800078        0x0 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .bss           0x00800078        0x0 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .bss           0x00800078        0x0 e:/engineering/embedded/avr-projects/0- toolchain/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
  *(.bss*)
  .bss.RxFrame_Ready
-                0x00800080        0x1 ./Src/Boot.o
+                0x00800078        0x1 ./Src/Boot.o
  .bss.CurrentMode
-                0x00800081        0x1 ./Src/Boot.o
+                0x00800079        0x1 ./Src/Boot.o
  .bss.RxFrameBuffer
-                0x00800082       0x82 ./Src/Boot.o
- .bss.RxPageNo  0x00800104        0x1 ./Src/Boot.o
- .bss.RxFrameIndex
-                0x00800105        0x1 ./Src/Boot.o
- .bss.PageIndex.1485
-                0x00800106        0x1 ./Src/Boot.o
- .bss.RxFrameLength.1475
-                0x00800107        0x1 ./Src/Boot.o
+                0x0080007a       0x82 ./Src/Boot.o
+ .bss.RxPageNo  0x008000fc        0x1 ./Src/Boot.o
  .bss.AppVersion
-                0x00800108        0x5 ./Src/Boot.o
+                0x008000fd        0x5 ./Src/Boot.o
+ .bss.RxFrameIndex
+                0x00800102        0x1 ./Src/Boot.o
+ .bss.PageIndex.1472
+                0x00800103        0x1 ./Src/Boot.o
+ .bss.RxFrameLength.1462
+                0x00800104        0x1 ./Src/Boot.o
  .bss.Boot_finished
-                0x0080010d        0x1 ./Src/main.o
-                0x0080010d                Boot_finished
+                0x00800105        0x1 ./Src/main.o
+                0x00800105                Boot_finished
  .bss.UART_Tx_callback
-                0x0080010e        0x2 ./Drivers/MCAL/UART/UART_program.o
+                0x00800106        0x2 ./Drivers/MCAL/UART/UART_program.o
  .bss.UART_Rx_callback
-                0x00800110        0x2 ./Drivers/MCAL/UART/UART_program.o
+                0x00800108        0x2 ./Drivers/MCAL/UART/UART_program.o
+ .bss.Init      0x0080010a        0x1 ./Drivers/MCAL/DIO/DIO_program.o
  *(COMMON)
- COMMON         0x00800112        0x1 ./Src/Boot.o
-                0x00800112                Boot_varsion_loc
-                0x00800113                PROVIDE (__bss_end, .)
-                0x00007586                __data_load_start = LOADADDR (.data)
-                0x000075a6                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x0080010b        0x1 ./Src/Boot.o
+                0x0080010b                Boot_varsion_loc
+                0x0080010c                PROVIDE (__bss_end, .)
+                0x000076ee                __data_load_start = LOADADDR (.data)
+                0x00007706                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800113        0x0
-                0x00800113                PROVIDE (__noinit_start, .)
+.noinit         0x0080010c        0x0
+                0x0080010c                PROVIDE (__noinit_start, .)
  *(.noinit*)
-                0x00800113                PROVIDE (__noinit_end, .)
-                0x00800113                _end = .
-                0x00800113                PROVIDE (__heap_start, .)
+                0x0080010c                PROVIDE (__noinit_end, .)
+                0x0080010c                _end = .
+                0x0080010c                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
  *(.eeprom*)

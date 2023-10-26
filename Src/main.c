@@ -14,6 +14,12 @@ int main( void )
 {
 	// Initiate the bootloader and check if there is a flashing request or not
 	Boot_init();
+
+	// Indecator
+	DIO_vInit();
+	DIO_vSetPinDirection(GROUPA, PIN0, OUTPUT);
+	DIO_vSetPinValue(GROUPA, PIN0, HIGH);
+
 #if USE_INT == 0
 	u8 UART_RxByte= 0;
 #endif
@@ -35,8 +41,10 @@ int main( void )
 		}
 	}
 	// Clear the Update request and Application Data
-	EEP_vWriteByte(8, 0x55);
-	// Reset the system
+	EEP_vWriteByte(App_updateReq, 0x55);
+	EEP_vWriteByte(App_indecator, 0x55);
+	DIO_vSetPinValue(GROUPA, PIN0, LOW);
+	// ECU Reset
 	WDT_void_start(time16_3_ms);
 	while(1);
 }

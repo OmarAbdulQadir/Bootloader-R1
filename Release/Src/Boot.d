@@ -10,7 +10,10 @@ Src/Boot.o Src/Boot.o: ../Src/Boot.c ../Src/../Inc/Boot.h \
   ../Src/../Inc/../Drivers/MCAL/EEP/EEP_interface.h \
   ../Src/../Inc/../Drivers/MCAL/EEP/../../../LIB/BIT_MATH.h \
   ../Src/../Inc/../Drivers/MCAL/EEP/../../../LIB/STD_TYPES.h \
-  ../Src/../Inc/../Drivers/MCAL/WDT/WDT_interface.h
+  ../Src/../Inc/../Drivers/MCAL/WDT/WDT_interface.h \
+  ../Src/../Inc/../Drivers/MCAL/DIO/DIO_interface.h \
+  ../Src/../Inc/../Drivers/MCAL/DIO/../../../LIB/BIT_MATH.h \
+  ../Src/../Inc/../Drivers/MCAL/DIO/../../../LIB/STD_TYPES.h
 
 ../Src/../Inc/Boot.h:
 
@@ -39,3 +42,9 @@ Src/Boot.o Src/Boot.o: ../Src/Boot.c ../Src/../Inc/Boot.h \
 ../Src/../Inc/../Drivers/MCAL/EEP/../../../LIB/STD_TYPES.h:
 
 ../Src/../Inc/../Drivers/MCAL/WDT/WDT_interface.h:
+
+../Src/../Inc/../Drivers/MCAL/DIO/DIO_interface.h:
+
+../Src/../Inc/../Drivers/MCAL/DIO/../../../LIB/BIT_MATH.h:
+
+../Src/../Inc/../Drivers/MCAL/DIO/../../../LIB/STD_TYPES.h:

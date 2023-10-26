@@ -20,6 +20,7 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+Drivers/MCAL/DIO \
 Drivers/MCAL/EEP \
 Drivers/MCAL/GI \
 Drivers/MCAL/UART \

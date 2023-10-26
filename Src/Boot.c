@@ -9,10 +9,6 @@
 
 #include "../Inc/Boot.h"
 
-// Variable for bootloader intialization and version
-static u8 BootStarting[16] = "Bootloader R V.\n";
-static u8 APPStarting[16] = "Application R V.";
-static u8 BootVersion[4] = {0x80, 0x01, 0x01, 0x00};
 // Variable for application versiona and update request
 static u8 AppVersion[5] = { 0 };
 // Recived frame buffer
@@ -21,139 +17,54 @@ static u8 RxFrameIndex = ST_BYTE;
 static u8 RxFrame_Ready = STD_FALSE;
 static u8 RxPageNo = 0;
 
-// EEPROM Locations identifier
-enum
-{
-	Boot_indecator,				// Indicator for the bootloader first run
-	Boot_release,				// Bootloader release
-	Boot_version,				// Bootloader version
-	Boot_subversion,			// Bootloader sub-version
-	App_indecator,				// Indicator for the application exsitance
-	App_release,				// Application release
-	App_version,				// Application version
-	App_subversion,				// Application sub-version
-	App_updateReq				// Update request indicator
-}Boot_varsion_loc;
-
-// UDS Service codes and system modes
-enum
-{
-	Waiting_Session_Control = 0x00,
-	Diagnostic_Session_Control= 0x10,
-	Programming_Session= 0x03,
-	Request_Download= 0x34,
-	Request_Upload= 0x35,
-	Transfer_Data= 0x36,
-	Transfer_Exit= 0x37
-};
-
 // Mode Control variables
 static u8 CurrentMode = Waiting_Session_Control;
 
 void Boot_init( void )
 {
-	// EEP data container
-	u8 EEP_Data = 0;
 	// Initialize UART for flashing
 	UART_vInit();
-	#if USE_INT==1
+#if USE_INT==1
 	// Set the uart callback function
 	UART_vSetRxCallback(Boot_vRxCallback);
 	// Relocate the vector table
 	GI_vRelocateIVT(IVT_BLD);
 	// Enable the global interrupt
 	GI_Enable();
-	#else
+#else
 	// Disable interrupt
 	GI_Disable();
-	#endif
-	// Get the indicator value for the bootloader first run
-	EEP_vReadByte(Boot_indecator, &EEP_Data);
-	// Check if its the first run for the booleader
-	if(EEP_Data == BootVersion[0])
-	{// If not the first run
-		// Print the bootloader release and version
-		for(u8 i= 0; i< 16;i++)
-		{
-			UART_vSendByte(BootStarting[i]);
-			if(i == 11)
-			{
-				// Release
-				EEP_vReadByte(Boot_release, &EEP_Data);
-				UART_vSendByte(EEP_Data+'0');
-			}
-			else if(i == 13)
-			{
-				// Version
-				EEP_vReadByte(Boot_version, &EEP_Data);
-				UART_vSendByte(EEP_Data+'0');
-			}
-			else if(i == 14)
-			{
-				// Sub version
-				EEP_vReadByte(Boot_subversion, &EEP_Data);
-				UART_vSendByte(EEP_Data+'0');
-			}
-		}
-	}
-	else
-	{// If its the first run
-		// Save the Bootloader release and version data
-		for(u8 i= 0; i<= 3; i++)
-		{
-			EEP_vWriteByte(i, BootVersion[i]);
-		}
-		// Reset the system
-		WDT_void_start(time16_3_ms);
-		while(1);
-	}
-
+#endif
 	// get tht indicator value for application exsitance
-	for(u8 i= 0; i< 5; i++)
+	for(u8 i= App_indecator; i<= App_updateReq; i++)
 	{
-		EEP_vReadByte(App_indecator+i, &AppVersion[i]);
+		EEP_vReadByte(i, &AppVersion[i]);
 	}
 
 	// Check if there is an application || Check if there is an update request
-	// Nither the application exsit nor there is an update request >> Systems intial state
-	//															Wait for flashing
 	// There is an application an application and no update request >> Jump to the application
-	// There is an no application and there an update request >> Systems Fault return to
-	//															initial state wait for flashing
-	// There is an application and update request >> Reply to the request and start flashing
-	if( (AppVersion[0] == 0x55) && (AppVersion[4] != 0xAA))
-	{// If no flashing will happen
+	if( (AppVersion[App_indecator] == 0x55) && (AppVersion[App_updateReq] == 0x55) )
+	{// No flash programming jump to the application
+#if USE_INT==1
 		// Disable the global interrupt and relocate the vector table to the application section
-		// Print the bootloader release and version
-		for(u8 i= 0; i< 16;i++)
-		{
-			UART_vSendByte(APPStarting[i]);
-			if(i == 12)
-			{
-				// Release
-				UART_vSendByte(AppVersion[1]+'0');
-			}
-			else if(i == 14)
-			{
-				// Version
-				UART_vSendByte(AppVersion[2]+'0');
-			}
-			else if(i == 15)
-			{
-				// Sub version
-				UART_vSendByte(AppVersion[3]+'0');
-			}
-		}
-		#if USE_INT==1
 		GI_Disable();
 		GI_vRelocateIVT(IVT_APP);
-		#endif
+#endif
 		// Jump to the application
 		asm("jmp 0");
 	}
+	// There is an application and update request >> Reply to the request and start flashing
+	else if( (AppVersion[App_indecator] == 0x55) && (AppVersion[App_updateReq] == 0xAA) )
+	{// Flash update will be carried out from Downdload request
+		// Make current mode waiting download request
+		CurrentMode = Programming_Session;
+		// Continue to the bootloader app
+	}
+	// Nither the application exsit nor there is an update request >> Systems intial state Wait for flash programming
+	// There is no application and there an update request >> Systems Fault return to initial state wait for flash programming
 	else
-	{// If flashing will happen
-		// Continue to the bootloader
+	{// Flash programming will be performed for the first time
+		// Continue to the bootloader app
 	}
 }
 
@@ -279,6 +190,14 @@ u8 Boot_vMainTask( void )
 					UART_vSendByte(NEG_RESPONSE);
 				}
 			}
+			else if(RxFrameBuffer[SERVICE_ID] == ECU_RESET)
+			{
+				// Send positive response
+				UART_vSendByte(ECU_RESET+POS_RESPONSE);
+				// ECU Reset
+				WDT_void_start(time16_3_ms);
+				while(1);
+			}
 			else
 			{// Wrong service ID
 				// NG response
@@ -295,10 +214,9 @@ u8 Boot_vMainTask( void )
 					// Save the code size
 					RxPageNo = RxFrameBuffer[CODE_SIZE_PAGES];
 					// Update the App info in the EEP-Rom
-					EEP_vWriteByte(App_indecator, 0x55);
-					EEP_vWriteByte(App_release, RxFrameBuffer[CODE_RELEASE]);
-					EEP_vWriteByte(App_version, RxFrameBuffer[CODE_VERSION]);
-					EEP_vWriteByte(App_subversion, RxFrameBuffer[CODE_SUB_VERSION]);
+					AppVersion[App_release] = RxFrameBuffer[CODE_RELEASE];
+					AppVersion[App_version] = RxFrameBuffer[CODE_VERSION];
+					AppVersion[App_subversion] = RxFrameBuffer[CODE_SUB_VERSION];
 					// Transmit the system mode to Programming session
 					CurrentMode = Request_Download;
 					// Send postive response
@@ -316,6 +234,14 @@ u8 Boot_vMainTask( void )
 				UART_vSendByte(NEG_RESPONSE);
 				// reset the current mode
 				CurrentMode = Waiting_Session_Control;
+			}
+			else if(RxFrameBuffer[SERVICE_ID] == ECU_RESET)
+			{
+				// Send positive response
+				UART_vSendByte(ECU_RESET+POS_RESPONSE);
+				// ECU Reset
+				WDT_void_start(time16_3_ms);
+				while(1);
 			}
 			else
 			{// Wrong service ID
@@ -342,6 +268,14 @@ u8 Boot_vMainTask( void )
 					UART_vSendByte(NEG_RESPONSE);
 				}
 			}
+			else if(RxFrameBuffer[SERVICE_ID] == ECU_RESET)
+			{
+				// Send positive response
+				UART_vSendByte(ECU_RESET+POS_RESPONSE);
+				// ECU Reset
+				WDT_void_start(time16_3_ms);
+				while(1);
+			}
 			else
 			{
 				// NG response
@@ -351,6 +285,12 @@ u8 Boot_vMainTask( void )
 		else if(CurrentMode == Request_Upload)
 		{// In upload request mode
 			// Check if the received frame
+
+			// Send positive response
+			UART_vSendByte(ECU_RESET+POS_RESPONSE);
+			// ECU Reset
+			WDT_void_start(time16_3_ms);
+			while(1);
 		}
 		else if(CurrentMode == Transfer_Data)
 		{// In data Transfer mode
@@ -373,6 +313,14 @@ u8 Boot_vMainTask( void )
 					UART_vSendByte(NEG_RESPONSE);
 				}
 			}
+			else if(RxFrameBuffer[SERVICE_ID] == ECU_RESET)
+			{
+				// Send positive response
+				UART_vSendByte(ECU_RESET+POS_RESPONSE);
+				// ECU Reset
+				WDT_void_start(time16_3_ms);
+				while(1);
+			}
 			else if(RxFrameBuffer[SERVICE_ID] == Transfer_Exit)
 			{
 				if(PageIndex == RxPageNo)
@@ -382,6 +330,11 @@ u8 Boot_vMainTask( void )
 					UART_vSendByte(Transfer_Exit+POS_RESPONSE);
 					// reset the current mode
 					CurrentMode = Waiting_Session_Control;
+					// Update the App info in the EEP-Rom
+					EEP_vWriteByte(App_indecator, 0x55);
+					EEP_vWriteByte(App_release, AppVersion[App_release]);
+					EEP_vWriteByte(App_version, AppVersion[App_version]);
+					EEP_vWriteByte(App_subversion, AppVersion[App_subversion]);
 					// Return 1
 					return 1;
 				}

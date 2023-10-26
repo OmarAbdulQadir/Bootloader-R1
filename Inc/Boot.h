@@ -19,6 +19,7 @@
 #include "../Drivers/MCAL/UART/UART_interface.h"
 #include "../Drivers/MCAL/EEP/EEP_interface.h"
 #include "../Drivers/MCAL/WDT/WDT_interface.h"
+#include "../Drivers/MCAL/DIO/DIO_interface.h"
 
 // Macros section
 #define NEG_RESPONSE			0x7F
@@ -34,6 +35,28 @@
 #define CODE_SUB_VERSION		3
 #define CODE_SIZE_PAGES			4
 
+// EEPROM Locations identifier
+enum
+{
+	App_indecator,				// Indicator for the application exsitance
+	App_release,				// Application release
+	App_version,				// Application version
+	App_subversion,				// Application sub-version
+	App_updateReq				// Update request indicator
+}Boot_varsion_loc;
+
+// UDS Service codes and system modes
+enum
+{
+	Waiting_Session_Control = 0x00,
+	Diagnostic_Session_Control= 0x10,
+	ECU_RESET = 0x11,
+	Programming_Session= 0x03,
+	Request_Download= 0x34,
+	Request_Upload= 0x35,
+	Transfer_Data= 0x36,
+	Transfer_Exit= 0x37
+};
 
 // Boot functions
 void Boot_init( void );

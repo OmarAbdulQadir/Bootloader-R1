@@ -3,11 +3,11 @@ Bootloader_R1.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00000586  00007000  00007000  00000094  2**1
+  0 .text         000006ee  00007000  00007000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         00000020  00800060  00007586  0000061a  2**0
+  1 .data         00000018  00800060  000076ee  00000782  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          00000093  00800080  00800080  0000063a  2**0
+  2 .bss          00000094  00800078  00800078  0000079a  2**0
                   ALLOC
 
 Disassembly of section .text:
@@ -26,9 +26,9 @@ Disassembly of section .text:
     7028:	0c 94 47 38 	jmp	0x708e	; 0x708e <__bad_interrupt>
     702c:	0c 94 47 38 	jmp	0x708e	; 0x708e <__bad_interrupt>
     7030:	0c 94 47 38 	jmp	0x708e	; 0x708e <__bad_interrupt>
-    7034:	0c 94 33 3a 	jmp	0x7466	; 0x7466 <__vector_13>
+    7034:	0c 94 1a 3a 	jmp	0x7434	; 0x7434 <__vector_13>
     7038:	0c 94 47 38 	jmp	0x708e	; 0x708e <__bad_interrupt>
-    703c:	0c 94 62 3a 	jmp	0x74c4	; 0x74c4 <__vector_15>
+    703c:	0c 94 49 3a 	jmp	0x7492	; 0x7492 <__vector_15>
     7040:	0c 94 47 38 	jmp	0x708e	; 0x708e <__bad_interrupt>
     7044:	0c 94 47 38 	jmp	0x708e	; 0x708e <__bad_interrupt>
     7048:	0c 94 47 38 	jmp	0x708e	; 0x708e <__bad_interrupt>
@@ -47,8 +47,8 @@ Disassembly of section .text:
     7060:	10 e0       	ldi	r17, 0x00	; 0
     7062:	a0 e6       	ldi	r26, 0x60	; 96
     7064:	b0 e0       	ldi	r27, 0x00	; 0
-    7066:	e6 e8       	ldi	r30, 0x86	; 134
-    7068:	f5 e7       	ldi	r31, 0x75	; 117
+    7066:	ee ee       	ldi	r30, 0xEE	; 238
+    7068:	f6 e7       	ldi	r31, 0x76	; 118
     706a:	02 c0       	rjmp	.+4      	; 0x7070 <.do_copy_data_start>
 
 0000706c <.do_copy_data_loop>:
@@ -56,13 +56,13 @@ Disassembly of section .text:
     706e:	0d 92       	st	X+, r0
 
 00007070 <.do_copy_data_start>:
-    7070:	a0 38       	cpi	r26, 0x80	; 128
+    7070:	a8 37       	cpi	r26, 0x78	; 120
     7072:	b1 07       	cpc	r27, r17
     7074:	d9 f7       	brne	.-10     	; 0x706c <.do_copy_data_loop>
 
 00007076 <__do_clear_bss>:
     7076:	11 e0       	ldi	r17, 0x01	; 1
-    7078:	a0 e8       	ldi	r26, 0x80	; 128
+    7078:	a8 e7       	ldi	r26, 0x78	; 120
     707a:	b0 e0       	ldi	r27, 0x00	; 0
     707c:	01 c0       	rjmp	.+2      	; 0x7080 <.do_clear_bss_start>
 
@@ -70,11 +70,11 @@ Disassembly of section .text:
     707e:	1d 92       	st	X+, r1
 
 00007080 <.do_clear_bss_start>:
-    7080:	a3 31       	cpi	r26, 0x13	; 19
+    7080:	ac 30       	cpi	r26, 0x0C	; 12
     7082:	b1 07       	cpc	r27, r17
     7084:	e1 f7       	brne	.-8      	; 0x707e <.do_clear_bss_loop>
-    7086:	0e 94 f8 39 	call	0x73f0	; 0x73f0 <main>
-    708a:	0c 94 c1 3a 	jmp	0x7582	; 0x7582 <_exit>
+    7086:	0e 94 b8 39 	call	0x7370	; 0x7370 <main>
+    708a:	0c 94 75 3b 	jmp	0x76ea	; 0x76ea <_exit>
 
 0000708e <__bad_interrupt>:
     708e:	0c 94 00 38 	jmp	0x7000	; 0x7000 <__vectors>
@@ -154,519 +154,700 @@ Disassembly of section .text:
 
 00007128 <Boot_vRxCallback>:
     7128:	28 2f       	mov	r18, r24
-    712a:	90 91 05 01 	lds	r25, 0x0105
+    712a:	90 91 02 01 	lds	r25, 0x0102
     712e:	99 23       	and	r25, r25
     7130:	69 f4       	brne	.+26     	; 0x714c <Boot_vRxCallback+0x24>
-    7132:	80 91 07 01 	lds	r24, 0x0107
+    7132:	80 91 04 01 	lds	r24, 0x0104
     7136:	88 23       	and	r24, r24
     7138:	49 f4       	brne	.+18     	; 0x714c <Boot_vRxCallback+0x24>
     713a:	23 38       	cpi	r18, 0x83	; 131
     713c:	18 f4       	brcc	.+6      	; 0x7144 <Boot_vRxCallback+0x1c>
-    713e:	20 93 07 01 	sts	0x0107, r18
+    713e:	20 93 04 01 	sts	0x0104, r18
     7142:	08 95       	ret
     7144:	8f e7       	ldi	r24, 0x7F	; 127
-    7146:	0e 94 24 3a 	call	0x7448	; 0x7448 <UART_vSendByte>
+    7146:	0e 94 0b 3a 	call	0x7416	; 0x7416 <UART_vSendByte>
     714a:	08 95       	ret
-    714c:	30 91 07 01 	lds	r19, 0x0107
+    714c:	30 91 04 01 	lds	r19, 0x0104
     7150:	93 17       	cp	r25, r19
     7152:	88 f4       	brcc	.+34     	; 0x7176 <Boot_vRxCallback+0x4e>
     7154:	e9 2f       	mov	r30, r25
     7156:	f0 e0       	ldi	r31, 0x00	; 0
-    7158:	ee 57       	subi	r30, 0x7E	; 126
+    7158:	e6 58       	subi	r30, 0x86	; 134
     715a:	ff 4f       	sbci	r31, 0xFF	; 255
     715c:	20 83       	st	Z, r18
     715e:	89 2f       	mov	r24, r25
     7160:	8f 5f       	subi	r24, 0xFF	; 255
-    7162:	80 93 05 01 	sts	0x0105, r24
+    7162:	80 93 02 01 	sts	0x0102, r24
     7166:	38 17       	cp	r19, r24
     7168:	69 f4       	brne	.+26     	; 0x7184 <Boot_vRxCallback+0x5c>
     716a:	81 e0       	ldi	r24, 0x01	; 1
-    716c:	80 93 80 00 	sts	0x0080, r24
-    7170:	10 92 07 01 	sts	0x0107, r1
+    716c:	80 93 78 00 	sts	0x0078, r24
+    7170:	10 92 04 01 	sts	0x0104, r1
     7174:	08 95       	ret
     7176:	8e e7       	ldi	r24, 0x7E	; 126
-    7178:	0e 94 24 3a 	call	0x7448	; 0x7448 <UART_vSendByte>
-    717c:	10 92 07 01 	sts	0x0107, r1
-    7180:	10 92 05 01 	sts	0x0105, r1
+    7178:	0e 94 0b 3a 	call	0x7416	; 0x7416 <UART_vSendByte>
+    717c:	10 92 04 01 	sts	0x0104, r1
+    7180:	10 92 02 01 	sts	0x0102, r1
     7184:	08 95       	ret
 
 00007186 <Boot_vMainTask>:
-    7186:	1f 93       	push	r17
-    7188:	80 91 80 00 	lds	r24, 0x0080
-    718c:	81 30       	cpi	r24, 0x01	; 1
-    718e:	09 f0       	breq	.+2      	; 0x7192 <Boot_vMainTask+0xc>
-    7190:	8e c0       	rjmp	.+284    	; 0x72ae <Boot_vMainTask+0x128>
-    7192:	80 91 81 00 	lds	r24, 0x0081
+    7186:	80 91 78 00 	lds	r24, 0x0078
+    718a:	81 30       	cpi	r24, 0x01	; 1
+    718c:	11 f0       	breq	.+4      	; 0x7192 <Boot_vMainTask+0xc>
+    718e:	80 e0       	ldi	r24, 0x00	; 0
+    7190:	08 95       	ret
+    7192:	80 91 79 00 	lds	r24, 0x0079
     7196:	88 23       	and	r24, r24
-    7198:	71 f4       	brne	.+28     	; 0x71b6 <Boot_vMainTask+0x30>
-    719a:	80 91 82 00 	lds	r24, 0x0082
+    7198:	b9 f4       	brne	.+46     	; 0x71c8 <Boot_vMainTask+0x42>
+    719a:	80 91 7a 00 	lds	r24, 0x007A
     719e:	80 31       	cpi	r24, 0x10	; 16
-    71a0:	09 f0       	breq	.+2      	; 0x71a4 <Boot_vMainTask+0x1e>
-    71a2:	78 c0       	rjmp	.+240    	; 0x7294 <Boot_vMainTask+0x10e>
-    71a4:	80 91 83 00 	lds	r24, 0x0083
-    71a8:	83 30       	cpi	r24, 0x03	; 3
-    71aa:	09 f0       	breq	.+2      	; 0x71ae <Boot_vMainTask+0x28>
-    71ac:	73 c0       	rjmp	.+230    	; 0x7294 <Boot_vMainTask+0x10e>
-    71ae:	80 93 81 00 	sts	0x0081, r24
-    71b2:	80 e5       	ldi	r24, 0x50	; 80
-    71b4:	70 c0       	rjmp	.+224    	; 0x7296 <Boot_vMainTask+0x110>
-    71b6:	83 30       	cpi	r24, 0x03	; 3
-    71b8:	61 f5       	brne	.+88     	; 0x7212 <Boot_vMainTask+0x8c>
-    71ba:	10 91 82 00 	lds	r17, 0x0082
-    71be:	14 33       	cpi	r17, 0x34	; 52
-    71c0:	21 f5       	brne	.+72     	; 0x720a <Boot_vMainTask+0x84>
-    71c2:	90 91 86 00 	lds	r25, 0x0086
-    71c6:	89 2f       	mov	r24, r25
-    71c8:	81 50       	subi	r24, 0x01	; 1
-    71ca:	80 3e       	cpi	r24, 0xE0	; 224
-    71cc:	08 f0       	brcs	.+2      	; 0x71d0 <Boot_vMainTask+0x4a>
-    71ce:	62 c0       	rjmp	.+196    	; 0x7294 <Boot_vMainTask+0x10e>
-    71d0:	90 93 04 01 	sts	0x0104, r25
-    71d4:	84 e0       	ldi	r24, 0x04	; 4
-    71d6:	90 e0       	ldi	r25, 0x00	; 0
-    71d8:	65 e5       	ldi	r22, 0x55	; 85
-    71da:	0e 94 9e 3a 	call	0x753c	; 0x753c <EEP_vWriteByte>
-    71de:	85 e0       	ldi	r24, 0x05	; 5
-    71e0:	90 e0       	ldi	r25, 0x00	; 0
-    71e2:	60 91 83 00 	lds	r22, 0x0083
-    71e6:	0e 94 9e 3a 	call	0x753c	; 0x753c <EEP_vWriteByte>
-    71ea:	86 e0       	ldi	r24, 0x06	; 6
-    71ec:	90 e0       	ldi	r25, 0x00	; 0
-    71ee:	60 91 84 00 	lds	r22, 0x0084
-    71f2:	0e 94 9e 3a 	call	0x753c	; 0x753c <EEP_vWriteByte>
-    71f6:	87 e0       	ldi	r24, 0x07	; 7
-    71f8:	90 e0       	ldi	r25, 0x00	; 0
-    71fa:	60 91 85 00 	lds	r22, 0x0085
-    71fe:	0e 94 9e 3a 	call	0x753c	; 0x753c <EEP_vWriteByte>
-    7202:	10 93 81 00 	sts	0x0081, r17
-    7206:	84 e7       	ldi	r24, 0x74	; 116
-    7208:	46 c0       	rjmp	.+140    	; 0x7296 <Boot_vMainTask+0x110>
-    720a:	15 33       	cpi	r17, 0x35	; 53
-    720c:	09 f0       	breq	.+2      	; 0x7210 <Boot_vMainTask+0x8a>
-    720e:	42 c0       	rjmp	.+132    	; 0x7294 <Boot_vMainTask+0x10e>
-    7210:	45 c0       	rjmp	.+138    	; 0x729c <Boot_vMainTask+0x116>
-    7212:	84 33       	cpi	r24, 0x34	; 52
-    7214:	91 f4       	brne	.+36     	; 0x723a <Boot_vMainTask+0xb4>
-    7216:	80 91 82 00 	lds	r24, 0x0082
-    721a:	86 33       	cpi	r24, 0x36	; 54
-    721c:	d9 f5       	brne	.+118    	; 0x7294 <Boot_vMainTask+0x10e>
-    721e:	80 93 81 00 	sts	0x0081, r24
-    7222:	80 91 83 00 	lds	r24, 0x0083
-    7226:	81 50       	subi	r24, 0x01	; 1
-    7228:	87 fd       	sbrc	r24, 7
-    722a:	34 c0       	rjmp	.+104    	; 0x7294 <Boot_vMainTask+0x10e>
-    722c:	80 91 06 01 	lds	r24, 0x0106
-    7230:	8f 5f       	subi	r24, 0xFF	; 255
-    7232:	80 93 06 01 	sts	0x0106, r24
-    7236:	81 50       	subi	r24, 0x01	; 1
-    7238:	18 c0       	rjmp	.+48     	; 0x726a <Boot_vMainTask+0xe4>
-    723a:	85 33       	cpi	r24, 0x35	; 53
-    723c:	a1 f1       	breq	.+104    	; 0x72a6 <Boot_vMainTask+0x120>
-    723e:	86 33       	cpi	r24, 0x36	; 54
-    7240:	69 f5       	brne	.+90     	; 0x729c <Boot_vMainTask+0x116>
-    7242:	80 91 82 00 	lds	r24, 0x0082
-    7246:	86 33       	cpi	r24, 0x36	; 54
-    7248:	b1 f4       	brne	.+44     	; 0x7276 <Boot_vMainTask+0xf0>
-    724a:	90 91 06 01 	lds	r25, 0x0106
-    724e:	80 91 04 01 	lds	r24, 0x0104
-    7252:	98 17       	cp	r25, r24
-    7254:	f8 f4       	brcc	.+62     	; 0x7294 <Boot_vMainTask+0x10e>
-    7256:	80 91 83 00 	lds	r24, 0x0083
-    725a:	81 50       	subi	r24, 0x01	; 1
-    725c:	87 fd       	sbrc	r24, 7
-    725e:	23 c0       	rjmp	.+70     	; 0x72a6 <Boot_vMainTask+0x120>
-    7260:	9f 5f       	subi	r25, 0xFF	; 255
-    7262:	90 93 06 01 	sts	0x0106, r25
-    7266:	91 50       	subi	r25, 0x01	; 1
-    7268:	89 2f       	mov	r24, r25
-    726a:	64 e8       	ldi	r22, 0x84	; 132
-    726c:	70 e0       	ldi	r23, 0x00	; 0
-    726e:	0e 94 49 38 	call	0x7092	; 0x7092 <Boot_vProgramPage>
-    7272:	86 e7       	ldi	r24, 0x76	; 118
-    7274:	10 c0       	rjmp	.+32     	; 0x7296 <Boot_vMainTask+0x110>
-    7276:	87 33       	cpi	r24, 0x37	; 55
-    7278:	69 f4       	brne	.+26     	; 0x7294 <Boot_vMainTask+0x10e>
-    727a:	90 91 06 01 	lds	r25, 0x0106
-    727e:	80 91 04 01 	lds	r24, 0x0104
-    7282:	98 17       	cp	r25, r24
-    7284:	39 f4       	brne	.+14     	; 0x7294 <Boot_vMainTask+0x10e>
-    7286:	87 e7       	ldi	r24, 0x77	; 119
-    7288:	0e 94 24 3a 	call	0x7448	; 0x7448 <UART_vSendByte>
-    728c:	10 92 81 00 	sts	0x0081, r1
-    7290:	81 e0       	ldi	r24, 0x01	; 1
-    7292:	0e c0       	rjmp	.+28     	; 0x72b0 <Boot_vMainTask+0x12a>
-    7294:	8f e7       	ldi	r24, 0x7F	; 127
-    7296:	0e 94 24 3a 	call	0x7448	; 0x7448 <UART_vSendByte>
-    729a:	05 c0       	rjmp	.+10     	; 0x72a6 <Boot_vMainTask+0x120>
-    729c:	8f e7       	ldi	r24, 0x7F	; 127
-    729e:	0e 94 24 3a 	call	0x7448	; 0x7448 <UART_vSendByte>
-    72a2:	10 92 81 00 	sts	0x0081, r1
-    72a6:	10 92 05 01 	sts	0x0105, r1
-    72aa:	10 92 80 00 	sts	0x0080, r1
-    72ae:	80 e0       	ldi	r24, 0x00	; 0
-    72b0:	1f 91       	pop	r17
-    72b2:	08 95       	ret
+    71a0:	49 f4       	brne	.+18     	; 0x71b4 <Boot_vMainTask+0x2e>
+    71a2:	80 91 7b 00 	lds	r24, 0x007B
+    71a6:	83 30       	cpi	r24, 0x03	; 3
+    71a8:	09 f0       	breq	.+2      	; 0x71ac <Boot_vMainTask+0x26>
+    71aa:	ae c0       	rjmp	.+348    	; 0x7308 <Boot_vMainTask+0x182>
+    71ac:	80 93 79 00 	sts	0x0079, r24
+    71b0:	80 e5       	ldi	r24, 0x50	; 80
+    71b2:	ab c0       	rjmp	.+342    	; 0x730a <Boot_vMainTask+0x184>
+    71b4:	81 31       	cpi	r24, 0x11	; 17
+    71b6:	09 f0       	breq	.+2      	; 0x71ba <Boot_vMainTask+0x34>
+    71b8:	a7 c0       	rjmp	.+334    	; 0x7308 <Boot_vMainTask+0x182>
+    71ba:	81 e5       	ldi	r24, 0x51	; 81
+    71bc:	0e 94 0b 3a 	call	0x7416	; 0x7416 <UART_vSendByte>
+    71c0:	80 e0       	ldi	r24, 0x00	; 0
+    71c2:	0e 94 f0 39 	call	0x73e0	; 0x73e0 <WDT_void_start>
+    71c6:	ff cf       	rjmp	.-2      	; 0x71c6 <Boot_vMainTask+0x40>
+    71c8:	83 30       	cpi	r24, 0x03	; 3
+    71ca:	51 f5       	brne	.+84     	; 0x7220 <Boot_vMainTask+0x9a>
+    71cc:	20 91 7a 00 	lds	r18, 0x007A
+    71d0:	24 33       	cpi	r18, 0x34	; 52
+    71d2:	c9 f4       	brne	.+50     	; 0x7206 <Boot_vMainTask+0x80>
+    71d4:	90 91 7e 00 	lds	r25, 0x007E
+    71d8:	89 2f       	mov	r24, r25
+    71da:	81 50       	subi	r24, 0x01	; 1
+    71dc:	80 3e       	cpi	r24, 0xE0	; 224
+    71de:	08 f0       	brcs	.+2      	; 0x71e2 <Boot_vMainTask+0x5c>
+    71e0:	93 c0       	rjmp	.+294    	; 0x7308 <Boot_vMainTask+0x182>
+    71e2:	90 93 fc 00 	sts	0x00FC, r25
+    71e6:	80 91 7b 00 	lds	r24, 0x007B
+    71ea:	80 93 fe 00 	sts	0x00FE, r24
+    71ee:	80 91 7c 00 	lds	r24, 0x007C
+    71f2:	80 93 ff 00 	sts	0x00FF, r24
+    71f6:	80 91 7d 00 	lds	r24, 0x007D
+    71fa:	80 93 00 01 	sts	0x0100, r24
+    71fe:	20 93 79 00 	sts	0x0079, r18
+    7202:	84 e7       	ldi	r24, 0x74	; 116
+    7204:	82 c0       	rjmp	.+260    	; 0x730a <Boot_vMainTask+0x184>
+    7206:	25 33       	cpi	r18, 0x35	; 53
+    7208:	09 f4       	brne	.+2      	; 0x720c <Boot_vMainTask+0x86>
+    720a:	82 c0       	rjmp	.+260    	; 0x7310 <Boot_vMainTask+0x18a>
+    720c:	21 31       	cpi	r18, 0x11	; 17
+    720e:	09 f0       	breq	.+2      	; 0x7212 <Boot_vMainTask+0x8c>
+    7210:	7b c0       	rjmp	.+246    	; 0x7308 <Boot_vMainTask+0x182>
+    7212:	81 e5       	ldi	r24, 0x51	; 81
+    7214:	0e 94 0b 3a 	call	0x7416	; 0x7416 <UART_vSendByte>
+    7218:	80 e0       	ldi	r24, 0x00	; 0
+    721a:	0e 94 f0 39 	call	0x73e0	; 0x73e0 <WDT_void_start>
+    721e:	ff cf       	rjmp	.-2      	; 0x721e <Boot_vMainTask+0x98>
+    7220:	84 33       	cpi	r24, 0x34	; 52
+    7222:	e1 f4       	brne	.+56     	; 0x725c <Boot_vMainTask+0xd6>
+    7224:	80 91 7a 00 	lds	r24, 0x007A
+    7228:	86 33       	cpi	r24, 0x36	; 54
+    722a:	71 f4       	brne	.+28     	; 0x7248 <Boot_vMainTask+0xc2>
+    722c:	80 93 79 00 	sts	0x0079, r24
+    7230:	80 91 7b 00 	lds	r24, 0x007B
+    7234:	81 50       	subi	r24, 0x01	; 1
+    7236:	87 fd       	sbrc	r24, 7
+    7238:	67 c0       	rjmp	.+206    	; 0x7308 <Boot_vMainTask+0x182>
+    723a:	80 91 03 01 	lds	r24, 0x0103
+    723e:	8f 5f       	subi	r24, 0xFF	; 255
+    7240:	80 93 03 01 	sts	0x0103, r24
+    7244:	81 50       	subi	r24, 0x01	; 1
+    7246:	2b c0       	rjmp	.+86     	; 0x729e <Boot_vMainTask+0x118>
+    7248:	81 31       	cpi	r24, 0x11	; 17
+    724a:	09 f0       	breq	.+2      	; 0x724e <Boot_vMainTask+0xc8>
+    724c:	5d c0       	rjmp	.+186    	; 0x7308 <Boot_vMainTask+0x182>
+    724e:	81 e5       	ldi	r24, 0x51	; 81
+    7250:	0e 94 0b 3a 	call	0x7416	; 0x7416 <UART_vSendByte>
+    7254:	80 e0       	ldi	r24, 0x00	; 0
+    7256:	0e 94 f0 39 	call	0x73e0	; 0x73e0 <WDT_void_start>
+    725a:	ff cf       	rjmp	.-2      	; 0x725a <Boot_vMainTask+0xd4>
+    725c:	85 33       	cpi	r24, 0x35	; 53
+    725e:	39 f4       	brne	.+14     	; 0x726e <Boot_vMainTask+0xe8>
+    7260:	81 e5       	ldi	r24, 0x51	; 81
+    7262:	0e 94 0b 3a 	call	0x7416	; 0x7416 <UART_vSendByte>
+    7266:	80 e0       	ldi	r24, 0x00	; 0
+    7268:	0e 94 f0 39 	call	0x73e0	; 0x73e0 <WDT_void_start>
+    726c:	ff cf       	rjmp	.-2      	; 0x726c <Boot_vMainTask+0xe6>
+    726e:	86 33       	cpi	r24, 0x36	; 54
+    7270:	09 f0       	breq	.+2      	; 0x7274 <Boot_vMainTask+0xee>
+    7272:	4e c0       	rjmp	.+156    	; 0x7310 <Boot_vMainTask+0x18a>
+    7274:	80 91 7a 00 	lds	r24, 0x007A
+    7278:	86 33       	cpi	r24, 0x36	; 54
+    727a:	b9 f4       	brne	.+46     	; 0x72aa <Boot_vMainTask+0x124>
+    727c:	90 91 03 01 	lds	r25, 0x0103
+    7280:	80 91 fc 00 	lds	r24, 0x00FC
+    7284:	98 17       	cp	r25, r24
+    7286:	08 f0       	brcs	.+2      	; 0x728a <Boot_vMainTask+0x104>
+    7288:	3f c0       	rjmp	.+126    	; 0x7308 <Boot_vMainTask+0x182>
+    728a:	80 91 7b 00 	lds	r24, 0x007B
+    728e:	81 50       	subi	r24, 0x01	; 1
+    7290:	87 fd       	sbrc	r24, 7
+    7292:	43 c0       	rjmp	.+134    	; 0x731a <Boot_vMainTask+0x194>
+    7294:	9f 5f       	subi	r25, 0xFF	; 255
+    7296:	90 93 03 01 	sts	0x0103, r25
+    729a:	91 50       	subi	r25, 0x01	; 1
+    729c:	89 2f       	mov	r24, r25
+    729e:	6c e7       	ldi	r22, 0x7C	; 124
+    72a0:	70 e0       	ldi	r23, 0x00	; 0
+    72a2:	0e 94 49 38 	call	0x7092	; 0x7092 <Boot_vProgramPage>
+    72a6:	86 e7       	ldi	r24, 0x76	; 118
+    72a8:	30 c0       	rjmp	.+96     	; 0x730a <Boot_vMainTask+0x184>
+    72aa:	81 31       	cpi	r24, 0x11	; 17
+    72ac:	39 f4       	brne	.+14     	; 0x72bc <Boot_vMainTask+0x136>
+    72ae:	81 e5       	ldi	r24, 0x51	; 81
+    72b0:	0e 94 0b 3a 	call	0x7416	; 0x7416 <UART_vSendByte>
+    72b4:	80 e0       	ldi	r24, 0x00	; 0
+    72b6:	0e 94 f0 39 	call	0x73e0	; 0x73e0 <WDT_void_start>
+    72ba:	ff cf       	rjmp	.-2      	; 0x72ba <Boot_vMainTask+0x134>
+    72bc:	87 33       	cpi	r24, 0x37	; 55
+    72be:	21 f5       	brne	.+72     	; 0x7308 <Boot_vMainTask+0x182>
+    72c0:	90 91 03 01 	lds	r25, 0x0103
+    72c4:	80 91 fc 00 	lds	r24, 0x00FC
+    72c8:	98 17       	cp	r25, r24
+    72ca:	f1 f4       	brne	.+60     	; 0x7308 <Boot_vMainTask+0x182>
+    72cc:	87 e7       	ldi	r24, 0x77	; 119
+    72ce:	0e 94 0b 3a 	call	0x7416	; 0x7416 <UART_vSendByte>
+    72d2:	10 92 79 00 	sts	0x0079, r1
+    72d6:	80 e0       	ldi	r24, 0x00	; 0
+    72d8:	90 e0       	ldi	r25, 0x00	; 0
+    72da:	65 e5       	ldi	r22, 0x55	; 85
+    72dc:	0e 94 85 3a 	call	0x750a	; 0x750a <EEP_vWriteByte>
+    72e0:	81 e0       	ldi	r24, 0x01	; 1
+    72e2:	90 e0       	ldi	r25, 0x00	; 0
+    72e4:	60 91 fe 00 	lds	r22, 0x00FE
+    72e8:	0e 94 85 3a 	call	0x750a	; 0x750a <EEP_vWriteByte>
+    72ec:	82 e0       	ldi	r24, 0x02	; 2
+    72ee:	90 e0       	ldi	r25, 0x00	; 0
+    72f0:	60 91 ff 00 	lds	r22, 0x00FF
+    72f4:	0e 94 85 3a 	call	0x750a	; 0x750a <EEP_vWriteByte>
+    72f8:	83 e0       	ldi	r24, 0x03	; 3
+    72fa:	90 e0       	ldi	r25, 0x00	; 0
+    72fc:	60 91 00 01 	lds	r22, 0x0100
+    7300:	0e 94 85 3a 	call	0x750a	; 0x750a <EEP_vWriteByte>
+    7304:	81 e0       	ldi	r24, 0x01	; 1
+    7306:	08 95       	ret
+    7308:	8f e7       	ldi	r24, 0x7F	; 127
+    730a:	0e 94 0b 3a 	call	0x7416	; 0x7416 <UART_vSendByte>
+    730e:	05 c0       	rjmp	.+10     	; 0x731a <Boot_vMainTask+0x194>
+    7310:	8f e7       	ldi	r24, 0x7F	; 127
+    7312:	0e 94 0b 3a 	call	0x7416	; 0x7416 <UART_vSendByte>
+    7316:	10 92 79 00 	sts	0x0079, r1
+    731a:	10 92 02 01 	sts	0x0102, r1
+    731e:	10 92 78 00 	sts	0x0078, r1
+    7322:	80 e0       	ldi	r24, 0x00	; 0
+    7324:	08 95       	ret
 
-000072b4 <Boot_init>:
-    72b4:	ef 92       	push	r14
-    72b6:	ff 92       	push	r15
-    72b8:	0f 93       	push	r16
-    72ba:	1f 93       	push	r17
-    72bc:	df 93       	push	r29
-    72be:	cf 93       	push	r28
-    72c0:	0f 92       	push	r0
-    72c2:	cd b7       	in	r28, 0x3d	; 61
-    72c4:	de b7       	in	r29, 0x3e	; 62
-    72c6:	19 82       	std	Y+1, r1	; 0x01
-    72c8:	0e 94 12 3a 	call	0x7424	; 0x7424 <UART_vInit>
-    72cc:	84 e9       	ldi	r24, 0x94	; 148
-    72ce:	98 e3       	ldi	r25, 0x38	; 56
-    72d0:	0e 94 2e 3a 	call	0x745c	; 0x745c <UART_vSetRxCallback>
-    72d4:	81 e0       	ldi	r24, 0x01	; 1
-    72d6:	0e 94 93 3a 	call	0x7526	; 0x7526 <GI_vRelocateIVT>
-    72da:	0e 94 8b 3a 	call	0x7516	; 0x7516 <GI_Enable>
-    72de:	80 e0       	ldi	r24, 0x00	; 0
-    72e0:	90 e0       	ldi	r25, 0x00	; 0
-    72e2:	7e 01       	movw	r14, r28
-    72e4:	08 94       	sec
-    72e6:	e1 1c       	adc	r14, r1
-    72e8:	f1 1c       	adc	r15, r1
-    72ea:	b7 01       	movw	r22, r14
-    72ec:	0e 94 b1 3a 	call	0x7562	; 0x7562 <EEP_vReadByte>
-    72f0:	89 81       	ldd	r24, Y+1	; 0x01
-    72f2:	80 38       	cpi	r24, 0x80	; 128
-    72f4:	19 f5       	brne	.+70     	; 0x733c <Boot_init+0x88>
-    72f6:	00 e0       	ldi	r16, 0x00	; 0
-    72f8:	10 e0       	ldi	r17, 0x00	; 0
-    72fa:	f8 01       	movw	r30, r16
-    72fc:	e0 5a       	subi	r30, 0xA0	; 160
-    72fe:	ff 4f       	sbci	r31, 0xFF	; 255
-    7300:	80 81       	ld	r24, Z
-    7302:	0e 94 24 3a 	call	0x7448	; 0x7448 <UART_vSendByte>
-    7306:	0b 30       	cpi	r16, 0x0B	; 11
-    7308:	19 f4       	brne	.+6      	; 0x7310 <Boot_init+0x5c>
-    730a:	81 e0       	ldi	r24, 0x01	; 1
-    730c:	90 e0       	ldi	r25, 0x00	; 0
-    730e:	09 c0       	rjmp	.+18     	; 0x7322 <Boot_init+0x6e>
-    7310:	0d 30       	cpi	r16, 0x0D	; 13
-    7312:	19 f4       	brne	.+6      	; 0x731a <Boot_init+0x66>
-    7314:	82 e0       	ldi	r24, 0x02	; 2
-    7316:	90 e0       	ldi	r25, 0x00	; 0
-    7318:	04 c0       	rjmp	.+8      	; 0x7322 <Boot_init+0x6e>
-    731a:	0e 30       	cpi	r16, 0x0E	; 14
-    731c:	49 f4       	brne	.+18     	; 0x7330 <Boot_init+0x7c>
-    731e:	83 e0       	ldi	r24, 0x03	; 3
-    7320:	90 e0       	ldi	r25, 0x00	; 0
-    7322:	b7 01       	movw	r22, r14
-    7324:	0e 94 b1 3a 	call	0x7562	; 0x7562 <EEP_vReadByte>
-    7328:	89 81       	ldd	r24, Y+1	; 0x01
-    732a:	80 5d       	subi	r24, 0xD0	; 208
-    732c:	0e 94 24 3a 	call	0x7448	; 0x7448 <UART_vSendByte>
-    7330:	0f 5f       	subi	r16, 0xFF	; 255
-    7332:	1f 4f       	sbci	r17, 0xFF	; 255
-    7334:	00 31       	cpi	r16, 0x10	; 16
-    7336:	11 05       	cpc	r17, r1
-    7338:	01 f7       	brne	.-64     	; 0x72fa <Boot_init+0x46>
-    733a:	18 c0       	rjmp	.+48     	; 0x736c <Boot_init+0xb8>
-    733c:	80 e0       	ldi	r24, 0x00	; 0
-    733e:	90 e0       	ldi	r25, 0x00	; 0
-    7340:	60 e8       	ldi	r22, 0x80	; 128
-    7342:	0e 94 9e 3a 	call	0x753c	; 0x753c <EEP_vWriteByte>
-    7346:	81 e0       	ldi	r24, 0x01	; 1
-    7348:	90 e0       	ldi	r25, 0x00	; 0
-    734a:	61 e0       	ldi	r22, 0x01	; 1
-    734c:	0e 94 9e 3a 	call	0x753c	; 0x753c <EEP_vWriteByte>
-    7350:	82 e0       	ldi	r24, 0x02	; 2
-    7352:	90 e0       	ldi	r25, 0x00	; 0
-    7354:	61 e0       	ldi	r22, 0x01	; 1
-    7356:	0e 94 9e 3a 	call	0x753c	; 0x753c <EEP_vWriteByte>
-    735a:	83 e0       	ldi	r24, 0x03	; 3
-    735c:	90 e0       	ldi	r25, 0x00	; 0
-    735e:	60 e0       	ldi	r22, 0x00	; 0
-    7360:	0e 94 9e 3a 	call	0x753c	; 0x753c <EEP_vWriteByte>
-    7364:	80 e0       	ldi	r24, 0x00	; 0
-    7366:	0e 94 09 3a 	call	0x7412	; 0x7412 <WDT_void_start>
-    736a:	ff cf       	rjmp	.-2      	; 0x736a <Boot_init+0xb6>
-    736c:	04 e0       	ldi	r16, 0x04	; 4
-    736e:	10 e0       	ldi	r17, 0x00	; 0
-    7370:	b8 01       	movw	r22, r16
-    7372:	6c 5f       	subi	r22, 0xFC	; 252
-    7374:	7e 4f       	sbci	r23, 0xFE	; 254
-    7376:	c8 01       	movw	r24, r16
-    7378:	0e 94 b1 3a 	call	0x7562	; 0x7562 <EEP_vReadByte>
-    737c:	0f 5f       	subi	r16, 0xFF	; 255
-    737e:	1f 4f       	sbci	r17, 0xFF	; 255
-    7380:	09 30       	cpi	r16, 0x09	; 9
-    7382:	11 05       	cpc	r17, r1
-    7384:	a9 f7       	brne	.-22     	; 0x7370 <Boot_init+0xbc>
-    7386:	80 91 08 01 	lds	r24, 0x0108
-    738a:	85 35       	cpi	r24, 0x55	; 85
-    738c:	49 f5       	brne	.+82     	; 0x73e0 <Boot_init+0x12c>
-    738e:	80 91 0c 01 	lds	r24, 0x010C
-    7392:	8a 3a       	cpi	r24, 0xAA	; 170
-    7394:	29 f1       	breq	.+74     	; 0x73e0 <Boot_init+0x12c>
-    7396:	00 e0       	ldi	r16, 0x00	; 0
-    7398:	10 e0       	ldi	r17, 0x00	; 0
-    739a:	f8 01       	movw	r30, r16
-    739c:	e0 59       	subi	r30, 0x90	; 144
-    739e:	ff 4f       	sbci	r31, 0xFF	; 255
-    73a0:	80 81       	ld	r24, Z
-    73a2:	0e 94 24 3a 	call	0x7448	; 0x7448 <UART_vSendByte>
-    73a6:	0c 30       	cpi	r16, 0x0C	; 12
-    73a8:	19 f4       	brne	.+6      	; 0x73b0 <Boot_init+0xfc>
-    73aa:	80 91 09 01 	lds	r24, 0x0109
-    73ae:	09 c0       	rjmp	.+18     	; 0x73c2 <Boot_init+0x10e>
-    73b0:	0e 30       	cpi	r16, 0x0E	; 14
-    73b2:	19 f4       	brne	.+6      	; 0x73ba <Boot_init+0x106>
-    73b4:	80 91 0a 01 	lds	r24, 0x010A
-    73b8:	04 c0       	rjmp	.+8      	; 0x73c2 <Boot_init+0x10e>
-    73ba:	0f 30       	cpi	r16, 0x0F	; 15
-    73bc:	29 f4       	brne	.+10     	; 0x73c8 <Boot_init+0x114>
-    73be:	80 91 0b 01 	lds	r24, 0x010B
-    73c2:	80 5d       	subi	r24, 0xD0	; 208
-    73c4:	0e 94 24 3a 	call	0x7448	; 0x7448 <UART_vSendByte>
-    73c8:	0f 5f       	subi	r16, 0xFF	; 255
-    73ca:	1f 4f       	sbci	r17, 0xFF	; 255
-    73cc:	00 31       	cpi	r16, 0x10	; 16
-    73ce:	11 05       	cpc	r17, r1
-    73d0:	21 f7       	brne	.-56     	; 0x739a <Boot_init+0xe6>
-    73d2:	0e 94 8f 3a 	call	0x751e	; 0x751e <GI_Disable>
-    73d6:	80 e0       	ldi	r24, 0x00	; 0
-    73d8:	0e 94 93 3a 	call	0x7526	; 0x7526 <GI_vRelocateIVT>
-    73dc:	0c 94 00 00 	jmp	0	; 0x0 <__heap_end>
-    73e0:	0f 90       	pop	r0
-    73e2:	cf 91       	pop	r28
-    73e4:	df 91       	pop	r29
-    73e6:	1f 91       	pop	r17
-    73e8:	0f 91       	pop	r16
-    73ea:	ff 90       	pop	r15
-    73ec:	ef 90       	pop	r14
-    73ee:	08 95       	ret
+00007326 <Boot_init>:
+    7326:	cf 93       	push	r28
+    7328:	df 93       	push	r29
+    732a:	0e 94 f9 39 	call	0x73f2	; 0x73f2 <UART_vInit>
+    732e:	0e 94 76 3a 	call	0x74ec	; 0x74ec <GI_Disable>
+    7332:	c0 e0       	ldi	r28, 0x00	; 0
+    7334:	d0 e0       	ldi	r29, 0x00	; 0
+    7336:	be 01       	movw	r22, r28
+    7338:	63 50       	subi	r22, 0x03	; 3
+    733a:	7f 4f       	sbci	r23, 0xFF	; 255
+    733c:	ce 01       	movw	r24, r28
+    733e:	0e 94 98 3a 	call	0x7530	; 0x7530 <EEP_vReadByte>
+    7342:	21 96       	adiw	r28, 0x01	; 1
+    7344:	c5 30       	cpi	r28, 0x05	; 5
+    7346:	d1 05       	cpc	r29, r1
+    7348:	b1 f7       	brne	.-20     	; 0x7336 <Boot_init+0x10>
+    734a:	80 91 fd 00 	lds	r24, 0x00FD
+    734e:	85 35       	cpi	r24, 0x55	; 85
+    7350:	61 f4       	brne	.+24     	; 0x736a <Boot_init+0x44>
+    7352:	80 91 01 01 	lds	r24, 0x0101
+    7356:	85 35       	cpi	r24, 0x55	; 85
+    7358:	19 f4       	brne	.+6      	; 0x7360 <Boot_init+0x3a>
+    735a:	0c 94 00 00 	jmp	0	; 0x0 <__heap_end>
+    735e:	05 c0       	rjmp	.+10     	; 0x736a <Boot_init+0x44>
+    7360:	8a 3a       	cpi	r24, 0xAA	; 170
+    7362:	19 f4       	brne	.+6      	; 0x736a <Boot_init+0x44>
+    7364:	83 e0       	ldi	r24, 0x03	; 3
+    7366:	80 93 79 00 	sts	0x0079, r24
+    736a:	df 91       	pop	r29
+    736c:	cf 91       	pop	r28
+    736e:	08 95       	ret
 
-000073f0 <main>:
-    73f0:	0e 94 5a 39 	call	0x72b4	; 0x72b4 <Boot_init>
-    73f4:	0e 94 c3 38 	call	0x7186	; 0x7186 <Boot_vMainTask>
-    73f8:	80 93 0d 01 	sts	0x010D, r24
-    73fc:	81 30       	cpi	r24, 0x01	; 1
-    73fe:	d1 f7       	brne	.-12     	; 0x73f4 <main+0x4>
-    7400:	88 e0       	ldi	r24, 0x08	; 8
-    7402:	90 e0       	ldi	r25, 0x00	; 0
-    7404:	65 e5       	ldi	r22, 0x55	; 85
-    7406:	0e 94 9e 3a 	call	0x753c	; 0x753c <EEP_vWriteByte>
-    740a:	80 e0       	ldi	r24, 0x00	; 0
-    740c:	0e 94 09 3a 	call	0x7412	; 0x7412 <WDT_void_start>
-    7410:	ff cf       	rjmp	.-2      	; 0x7410 <main+0x20>
+00007370 <main>:
+    7370:	0f 93       	push	r16
+    7372:	1f 93       	push	r17
+    7374:	df 93       	push	r29
+    7376:	cf 93       	push	r28
+    7378:	0f 92       	push	r0
+    737a:	cd b7       	in	r28, 0x3d	; 61
+    737c:	de b7       	in	r29, 0x3e	; 62
+    737e:	0e 94 93 39 	call	0x7326	; 0x7326 <Boot_init>
+    7382:	0e 94 a8 3a 	call	0x7550	; 0x7550 <DIO_vInit>
+    7386:	80 e0       	ldi	r24, 0x00	; 0
+    7388:	60 e0       	ldi	r22, 0x00	; 0
+    738a:	41 e0       	ldi	r20, 0x01	; 1
+    738c:	0e 94 bf 3a 	call	0x757e	; 0x757e <DIO_vSetPinDirection>
+    7390:	80 e0       	ldi	r24, 0x00	; 0
+    7392:	60 e0       	ldi	r22, 0x00	; 0
+    7394:	41 e0       	ldi	r20, 0x01	; 1
+    7396:	0e 94 09 3b 	call	0x7612	; 0x7612 <DIO_vSetPinValue>
+    739a:	19 82       	std	Y+1, r1	; 0x01
+    739c:	8e 01       	movw	r16, r28
+    739e:	0f 5f       	subi	r16, 0xFF	; 255
+    73a0:	1f 4f       	sbci	r17, 0xFF	; 255
+    73a2:	c8 01       	movw	r24, r16
+    73a4:	0e 94 0f 3a 	call	0x741e	; 0x741e <UART_vReceiveByte>
+    73a8:	89 81       	ldd	r24, Y+1	; 0x01
+    73aa:	0e 94 94 38 	call	0x7128	; 0x7128 <Boot_vRxCallback>
+    73ae:	0e 94 c3 38 	call	0x7186	; 0x7186 <Boot_vMainTask>
+    73b2:	80 93 05 01 	sts	0x0105, r24
+    73b6:	81 30       	cpi	r24, 0x01	; 1
+    73b8:	a1 f7       	brne	.-24     	; 0x73a2 <main+0x32>
+    73ba:	84 e0       	ldi	r24, 0x04	; 4
+    73bc:	90 e0       	ldi	r25, 0x00	; 0
+    73be:	65 e5       	ldi	r22, 0x55	; 85
+    73c0:	0e 94 85 3a 	call	0x750a	; 0x750a <EEP_vWriteByte>
+    73c4:	80 e0       	ldi	r24, 0x00	; 0
+    73c6:	90 e0       	ldi	r25, 0x00	; 0
+    73c8:	65 e5       	ldi	r22, 0x55	; 85
+    73ca:	0e 94 85 3a 	call	0x750a	; 0x750a <EEP_vWriteByte>
+    73ce:	80 e0       	ldi	r24, 0x00	; 0
+    73d0:	60 e0       	ldi	r22, 0x00	; 0
+    73d2:	40 e0       	ldi	r20, 0x00	; 0
+    73d4:	0e 94 09 3b 	call	0x7612	; 0x7612 <DIO_vSetPinValue>
+    73d8:	80 e0       	ldi	r24, 0x00	; 0
+    73da:	0e 94 f0 39 	call	0x73e0	; 0x73e0 <WDT_void_start>
+    73de:	ff cf       	rjmp	.-2      	; 0x73de <main+0x6e>
 
-00007412 <WDT_void_start>:
-    7412:	88 30       	cpi	r24, 0x08	; 8
-    7414:	10 f4       	brcc	.+4      	; 0x741a <WDT_void_start+0x8>
-    7416:	88 60       	ori	r24, 0x08	; 8
-    7418:	81 bd       	out	0x21, r24	; 33
-    741a:	08 95       	ret
+000073e0 <WDT_void_start>:
+    73e0:	88 30       	cpi	r24, 0x08	; 8
+    73e2:	10 f4       	brcc	.+4      	; 0x73e8 <WDT_void_start+0x8>
+    73e4:	88 60       	ori	r24, 0x08	; 8
+    73e6:	81 bd       	out	0x21, r24	; 33
+    73e8:	08 95       	ret
 
-0000741c <WDT_void_stop>:
-    741c:	88 e1       	ldi	r24, 0x18	; 24
-    741e:	81 bd       	out	0x21, r24	; 33
-    7420:	11 bc       	out	0x21, r1	; 33
-    7422:	08 95       	ret
+000073ea <WDT_void_stop>:
+    73ea:	88 e1       	ldi	r24, 0x18	; 24
+    73ec:	81 bd       	out	0x21, r24	; 33
+    73ee:	11 bc       	out	0x21, r1	; 33
+    73f0:	08 95       	ret
 
-00007424 <UART_vInit>:
-    7424:	10 bc       	out	0x20, r1	; 32
-    7426:	83 e3       	ldi	r24, 0x33	; 51
-    7428:	89 b9       	out	0x09, r24	; 9
-    742a:	88 e9       	ldi	r24, 0x98	; 152
-    742c:	8a b9       	out	0x0a, r24	; 10
-    742e:	86 e8       	ldi	r24, 0x86	; 134
-    7430:	80 bd       	out	0x20, r24	; 32
+000073f2 <UART_vInit>:
+    73f2:	10 bc       	out	0x20, r1	; 32
+    73f4:	83 e3       	ldi	r24, 0x33	; 51
+    73f6:	89 b9       	out	0x09, r24	; 9
+    73f8:	88 e9       	ldi	r24, 0x98	; 152
+    73fa:	8a b9       	out	0x0a, r24	; 10
+    73fc:	86 e8       	ldi	r24, 0x86	; 134
+    73fe:	80 bd       	out	0x20, r24	; 32
+    7400:	08 95       	ret
+
+00007402 <UART_u8IfTxAvaulable>:
+    7402:	8b b1       	in	r24, 0x0b	; 11
+    7404:	82 95       	swap	r24
+    7406:	86 95       	lsr	r24
+    7408:	81 70       	andi	r24, 0x01	; 1
+    740a:	08 95       	ret
+
+0000740c <UART_u8IfRxAvaulable>:
+    740c:	8b b1       	in	r24, 0x0b	; 11
+    740e:	88 1f       	adc	r24, r24
+    7410:	88 27       	eor	r24, r24
+    7412:	88 1f       	adc	r24, r24
+    7414:	08 95       	ret
+
+00007416 <UART_vSendByte>:
+    7416:	5d 9b       	sbis	0x0b, 5	; 11
+    7418:	fe cf       	rjmp	.-4      	; 0x7416 <UART_vSendByte>
+    741a:	8c b9       	out	0x0c, r24	; 12
+    741c:	08 95       	ret
+
+0000741e <UART_vReceiveByte>:
+    741e:	fc 01       	movw	r30, r24
+    7420:	5f 9b       	sbis	0x0b, 7	; 11
+    7422:	fe cf       	rjmp	.-4      	; 0x7420 <UART_vReceiveByte+0x2>
+    7424:	8c b1       	in	r24, 0x0c	; 12
+    7426:	80 83       	st	Z, r24
+    7428:	08 95       	ret
+
+0000742a <UART_vSetRxCallback>:
+    742a:	90 93 09 01 	sts	0x0109, r25
+    742e:	80 93 08 01 	sts	0x0108, r24
     7432:	08 95       	ret
 
-00007434 <UART_u8IfTxAvaulable>:
-    7434:	8b b1       	in	r24, 0x0b	; 11
-    7436:	82 95       	swap	r24
-    7438:	86 95       	lsr	r24
-    743a:	81 70       	andi	r24, 0x01	; 1
-    743c:	08 95       	ret
+00007434 <__vector_13>:
+    7434:	1f 92       	push	r1
+    7436:	0f 92       	push	r0
+    7438:	0f b6       	in	r0, 0x3f	; 63
+    743a:	0f 92       	push	r0
+    743c:	11 24       	eor	r1, r1
+    743e:	2f 93       	push	r18
+    7440:	3f 93       	push	r19
+    7442:	4f 93       	push	r20
+    7444:	5f 93       	push	r21
+    7446:	6f 93       	push	r22
+    7448:	7f 93       	push	r23
+    744a:	8f 93       	push	r24
+    744c:	9f 93       	push	r25
+    744e:	af 93       	push	r26
+    7450:	bf 93       	push	r27
+    7452:	ef 93       	push	r30
+    7454:	ff 93       	push	r31
+    7456:	e0 91 08 01 	lds	r30, 0x0108
+    745a:	f0 91 09 01 	lds	r31, 0x0109
+    745e:	30 97       	sbiw	r30, 0x00	; 0
+    7460:	11 f0       	breq	.+4      	; 0x7466 <__vector_13+0x32>
+    7462:	8c b1       	in	r24, 0x0c	; 12
+    7464:	09 95       	icall
+    7466:	ff 91       	pop	r31
+    7468:	ef 91       	pop	r30
+    746a:	bf 91       	pop	r27
+    746c:	af 91       	pop	r26
+    746e:	9f 91       	pop	r25
+    7470:	8f 91       	pop	r24
+    7472:	7f 91       	pop	r23
+    7474:	6f 91       	pop	r22
+    7476:	5f 91       	pop	r21
+    7478:	4f 91       	pop	r20
+    747a:	3f 91       	pop	r19
+    747c:	2f 91       	pop	r18
+    747e:	0f 90       	pop	r0
+    7480:	0f be       	out	0x3f, r0	; 63
+    7482:	0f 90       	pop	r0
+    7484:	1f 90       	pop	r1
+    7486:	18 95       	reti
 
-0000743e <UART_u8IfRxAvaulable>:
-    743e:	8b b1       	in	r24, 0x0b	; 11
-    7440:	88 1f       	adc	r24, r24
-    7442:	88 27       	eor	r24, r24
-    7444:	88 1f       	adc	r24, r24
-    7446:	08 95       	ret
+00007488 <UART_vSetTxCallback>:
+    7488:	90 93 07 01 	sts	0x0107, r25
+    748c:	80 93 06 01 	sts	0x0106, r24
+    7490:	08 95       	ret
 
-00007448 <UART_vSendByte>:
-    7448:	5d 9b       	sbis	0x0b, 5	; 11
-    744a:	fe cf       	rjmp	.-4      	; 0x7448 <UART_vSendByte>
-    744c:	8c b9       	out	0x0c, r24	; 12
-    744e:	08 95       	ret
+00007492 <__vector_15>:
+    7492:	1f 92       	push	r1
+    7494:	0f 92       	push	r0
+    7496:	0f b6       	in	r0, 0x3f	; 63
+    7498:	0f 92       	push	r0
+    749a:	11 24       	eor	r1, r1
+    749c:	2f 93       	push	r18
+    749e:	3f 93       	push	r19
+    74a0:	4f 93       	push	r20
+    74a2:	5f 93       	push	r21
+    74a4:	6f 93       	push	r22
+    74a6:	7f 93       	push	r23
+    74a8:	8f 93       	push	r24
+    74aa:	9f 93       	push	r25
+    74ac:	af 93       	push	r26
+    74ae:	bf 93       	push	r27
+    74b0:	ef 93       	push	r30
+    74b2:	ff 93       	push	r31
+    74b4:	e0 91 06 01 	lds	r30, 0x0106
+    74b8:	f0 91 07 01 	lds	r31, 0x0107
+    74bc:	30 97       	sbiw	r30, 0x00	; 0
+    74be:	09 f0       	breq	.+2      	; 0x74c2 <__vector_15+0x30>
+    74c0:	09 95       	icall
+    74c2:	ff 91       	pop	r31
+    74c4:	ef 91       	pop	r30
+    74c6:	bf 91       	pop	r27
+    74c8:	af 91       	pop	r26
+    74ca:	9f 91       	pop	r25
+    74cc:	8f 91       	pop	r24
+    74ce:	7f 91       	pop	r23
+    74d0:	6f 91       	pop	r22
+    74d2:	5f 91       	pop	r21
+    74d4:	4f 91       	pop	r20
+    74d6:	3f 91       	pop	r19
+    74d8:	2f 91       	pop	r18
+    74da:	0f 90       	pop	r0
+    74dc:	0f be       	out	0x3f, r0	; 63
+    74de:	0f 90       	pop	r0
+    74e0:	1f 90       	pop	r1
+    74e2:	18 95       	reti
 
-00007450 <UART_vReceiveByte>:
-    7450:	fc 01       	movw	r30, r24
-    7452:	5f 9b       	sbis	0x0b, 7	; 11
-    7454:	fe cf       	rjmp	.-4      	; 0x7452 <UART_vReceiveByte+0x2>
-    7456:	8c b1       	in	r24, 0x0c	; 12
-    7458:	80 83       	st	Z, r24
-    745a:	08 95       	ret
+000074e4 <GI_Enable>:
+    74e4:	8f b7       	in	r24, 0x3f	; 63
+    74e6:	80 68       	ori	r24, 0x80	; 128
+    74e8:	8f bf       	out	0x3f, r24	; 63
+    74ea:	08 95       	ret
 
-0000745c <UART_vSetRxCallback>:
-    745c:	90 93 11 01 	sts	0x0111, r25
-    7460:	80 93 10 01 	sts	0x0110, r24
-    7464:	08 95       	ret
+000074ec <GI_Disable>:
+    74ec:	8f b7       	in	r24, 0x3f	; 63
+    74ee:	8f 77       	andi	r24, 0x7F	; 127
+    74f0:	8f bf       	out	0x3f, r24	; 63
+    74f2:	08 95       	ret
 
-00007466 <__vector_13>:
-    7466:	1f 92       	push	r1
-    7468:	0f 92       	push	r0
-    746a:	0f b6       	in	r0, 0x3f	; 63
-    746c:	0f 92       	push	r0
-    746e:	11 24       	eor	r1, r1
-    7470:	2f 93       	push	r18
-    7472:	3f 93       	push	r19
-    7474:	4f 93       	push	r20
-    7476:	5f 93       	push	r21
-    7478:	6f 93       	push	r22
-    747a:	7f 93       	push	r23
-    747c:	8f 93       	push	r24
-    747e:	9f 93       	push	r25
-    7480:	af 93       	push	r26
-    7482:	bf 93       	push	r27
-    7484:	ef 93       	push	r30
-    7486:	ff 93       	push	r31
-    7488:	e0 91 10 01 	lds	r30, 0x0110
-    748c:	f0 91 11 01 	lds	r31, 0x0111
-    7490:	30 97       	sbiw	r30, 0x00	; 0
-    7492:	11 f0       	breq	.+4      	; 0x7498 <__vector_13+0x32>
-    7494:	8c b1       	in	r24, 0x0c	; 12
-    7496:	09 95       	icall
-    7498:	ff 91       	pop	r31
-    749a:	ef 91       	pop	r30
-    749c:	bf 91       	pop	r27
-    749e:	af 91       	pop	r26
-    74a0:	9f 91       	pop	r25
-    74a2:	8f 91       	pop	r24
-    74a4:	7f 91       	pop	r23
-    74a6:	6f 91       	pop	r22
-    74a8:	5f 91       	pop	r21
-    74aa:	4f 91       	pop	r20
-    74ac:	3f 91       	pop	r19
-    74ae:	2f 91       	pop	r18
-    74b0:	0f 90       	pop	r0
-    74b2:	0f be       	out	0x3f, r0	; 63
-    74b4:	0f 90       	pop	r0
-    74b6:	1f 90       	pop	r1
-    74b8:	18 95       	reti
+000074f4 <GI_vRelocateIVT>:
+    74f4:	88 23       	and	r24, r24
+    74f6:	21 f4       	brne	.+8      	; 0x7500 <GI_vRelocateIVT+0xc>
+    74f8:	81 e0       	ldi	r24, 0x01	; 1
+    74fa:	8b bf       	out	0x3b, r24	; 59
+    74fc:	1b be       	out	0x3b, r1	; 59
+    74fe:	08 95       	ret
+    7500:	81 e0       	ldi	r24, 0x01	; 1
+    7502:	8b bf       	out	0x3b, r24	; 59
+    7504:	82 e0       	ldi	r24, 0x02	; 2
+    7506:	8b bf       	out	0x3b, r24	; 59
+    7508:	08 95       	ret
 
-000074ba <UART_vSetTxCallback>:
-    74ba:	90 93 0f 01 	sts	0x010F, r25
-    74be:	80 93 0e 01 	sts	0x010E, r24
-    74c2:	08 95       	ret
+0000750a <EEP_vWriteByte>:
+    750a:	24 e0       	ldi	r18, 0x04	; 4
+    750c:	80 30       	cpi	r24, 0x00	; 0
+    750e:	92 07       	cpc	r25, r18
+    7510:	10 f0       	brcs	.+4      	; 0x7516 <EEP_vWriteByte+0xc>
+    7512:	80 e0       	ldi	r24, 0x00	; 0
+    7514:	08 95       	ret
+    7516:	9f bb       	out	0x1f, r25	; 31
+    7518:	8e bb       	out	0x1e, r24	; 30
+    751a:	6d bb       	out	0x1d, r22	; 29
+    751c:	e1 99       	sbic	0x1c, 1	; 28
+    751e:	fe cf       	rjmp	.-4      	; 0x751c <EEP_vWriteByte+0x12>
+    7520:	e2 9a       	sbi	0x1c, 2	; 28
+    7522:	e1 9a       	sbi	0x1c, 1	; 28
+    7524:	80 e2       	ldi	r24, 0x20	; 32
+    7526:	9e e4       	ldi	r25, 0x4E	; 78
+    7528:	01 97       	sbiw	r24, 0x01	; 1
+    752a:	f1 f7       	brne	.-4      	; 0x7528 <EEP_vWriteByte+0x1e>
+    752c:	81 e0       	ldi	r24, 0x01	; 1
+    752e:	08 95       	ret
 
-000074c4 <__vector_15>:
-    74c4:	1f 92       	push	r1
-    74c6:	0f 92       	push	r0
-    74c8:	0f b6       	in	r0, 0x3f	; 63
-    74ca:	0f 92       	push	r0
-    74cc:	11 24       	eor	r1, r1
-    74ce:	2f 93       	push	r18
-    74d0:	3f 93       	push	r19
-    74d2:	4f 93       	push	r20
-    74d4:	5f 93       	push	r21
-    74d6:	6f 93       	push	r22
-    74d8:	7f 93       	push	r23
-    74da:	8f 93       	push	r24
-    74dc:	9f 93       	push	r25
-    74de:	af 93       	push	r26
-    74e0:	bf 93       	push	r27
-    74e2:	ef 93       	push	r30
-    74e4:	ff 93       	push	r31
-    74e6:	e0 91 0e 01 	lds	r30, 0x010E
-    74ea:	f0 91 0f 01 	lds	r31, 0x010F
-    74ee:	30 97       	sbiw	r30, 0x00	; 0
-    74f0:	09 f0       	breq	.+2      	; 0x74f4 <__vector_15+0x30>
-    74f2:	09 95       	icall
-    74f4:	ff 91       	pop	r31
-    74f6:	ef 91       	pop	r30
-    74f8:	bf 91       	pop	r27
-    74fa:	af 91       	pop	r26
-    74fc:	9f 91       	pop	r25
-    74fe:	8f 91       	pop	r24
-    7500:	7f 91       	pop	r23
-    7502:	6f 91       	pop	r22
-    7504:	5f 91       	pop	r21
-    7506:	4f 91       	pop	r20
-    7508:	3f 91       	pop	r19
-    750a:	2f 91       	pop	r18
-    750c:	0f 90       	pop	r0
-    750e:	0f be       	out	0x3f, r0	; 63
-    7510:	0f 90       	pop	r0
-    7512:	1f 90       	pop	r1
-    7514:	18 95       	reti
+00007530 <EEP_vReadByte>:
+    7530:	fb 01       	movw	r30, r22
+    7532:	24 e0       	ldi	r18, 0x04	; 4
+    7534:	80 30       	cpi	r24, 0x00	; 0
+    7536:	92 07       	cpc	r25, r18
+    7538:	10 f0       	brcs	.+4      	; 0x753e <EEP_vReadByte+0xe>
+    753a:	80 e0       	ldi	r24, 0x00	; 0
+    753c:	08 95       	ret
+    753e:	9f bb       	out	0x1f, r25	; 31
+    7540:	8e bb       	out	0x1e, r24	; 30
+    7542:	e1 99       	sbic	0x1c, 1	; 28
+    7544:	fe cf       	rjmp	.-4      	; 0x7542 <EEP_vReadByte+0x12>
+    7546:	e0 9a       	sbi	0x1c, 0	; 28
+    7548:	8d b3       	in	r24, 0x1d	; 29
+    754a:	80 83       	st	Z, r24
+    754c:	81 e0       	ldi	r24, 0x01	; 1
+    754e:	08 95       	ret
 
-00007516 <GI_Enable>:
-    7516:	8f b7       	in	r24, 0x3f	; 63
-    7518:	80 68       	ori	r24, 0x80	; 128
-    751a:	8f bf       	out	0x3f, r24	; 63
-    751c:	08 95       	ret
+00007550 <DIO_vInit>:
+    7550:	81 e0       	ldi	r24, 0x01	; 1
+    7552:	80 93 0a 01 	sts	0x010A, r24
+    7556:	08 95       	ret
 
-0000751e <GI_Disable>:
-    751e:	8f b7       	in	r24, 0x3f	; 63
-    7520:	8f 77       	andi	r24, 0x7F	; 127
-    7522:	8f bf       	out	0x3f, r24	; 63
-    7524:	08 95       	ret
+00007558 <DIO_vSetPortDirection>:
+    7558:	e8 2f       	mov	r30, r24
+    755a:	84 30       	cpi	r24, 0x04	; 4
+    755c:	70 f4       	brcc	.+28     	; 0x757a <DIO_vSetPortDirection+0x22>
+    755e:	80 91 0a 01 	lds	r24, 0x010A
+    7562:	81 30       	cpi	r24, 0x01	; 1
+    7564:	51 f4       	brne	.+20     	; 0x757a <DIO_vSetPortDirection+0x22>
+    7566:	f0 e0       	ldi	r31, 0x00	; 0
+    7568:	ee 0f       	add	r30, r30
+    756a:	ff 1f       	adc	r31, r31
+    756c:	e0 59       	subi	r30, 0x90	; 144
+    756e:	ff 4f       	sbci	r31, 0xFF	; 255
+    7570:	01 90       	ld	r0, Z+
+    7572:	f0 81       	ld	r31, Z
+    7574:	e0 2d       	mov	r30, r0
+    7576:	60 83       	st	Z, r22
+    7578:	08 95       	ret
+    757a:	80 e0       	ldi	r24, 0x00	; 0
+    757c:	08 95       	ret
 
-00007526 <GI_vRelocateIVT>:
-    7526:	88 23       	and	r24, r24
-    7528:	21 f4       	brne	.+8      	; 0x7532 <GI_vRelocateIVT+0xc>
-    752a:	81 e0       	ldi	r24, 0x01	; 1
-    752c:	8b bf       	out	0x3b, r24	; 59
-    752e:	1b be       	out	0x3b, r1	; 59
-    7530:	08 95       	ret
-    7532:	81 e0       	ldi	r24, 0x01	; 1
-    7534:	8b bf       	out	0x3b, r24	; 59
-    7536:	82 e0       	ldi	r24, 0x02	; 2
-    7538:	8b bf       	out	0x3b, r24	; 59
-    753a:	08 95       	ret
+0000757e <DIO_vSetPinDirection>:
+    757e:	e8 2f       	mov	r30, r24
+    7580:	84 30       	cpi	r24, 0x04	; 4
+    7582:	90 f5       	brcc	.+100    	; 0x75e8 <DIO_vSetPinDirection+0x6a>
+    7584:	68 30       	cpi	r22, 0x08	; 8
+    7586:	80 f5       	brcc	.+96     	; 0x75e8 <DIO_vSetPinDirection+0x6a>
+    7588:	80 91 0a 01 	lds	r24, 0x010A
+    758c:	81 30       	cpi	r24, 0x01	; 1
+    758e:	61 f5       	brne	.+88     	; 0x75e8 <DIO_vSetPinDirection+0x6a>
+    7590:	44 23       	and	r20, r20
+    7592:	a9 f0       	breq	.+42     	; 0x75be <DIO_vSetPinDirection+0x40>
+    7594:	41 30       	cpi	r20, 0x01	; 1
+    7596:	41 f5       	brne	.+80     	; 0x75e8 <DIO_vSetPinDirection+0x6a>
+    7598:	f0 e0       	ldi	r31, 0x00	; 0
+    759a:	ee 0f       	add	r30, r30
+    759c:	ff 1f       	adc	r31, r31
+    759e:	e0 59       	subi	r30, 0x90	; 144
+    75a0:	ff 4f       	sbci	r31, 0xFF	; 255
+    75a2:	01 90       	ld	r0, Z+
+    75a4:	f0 81       	ld	r31, Z
+    75a6:	e0 2d       	mov	r30, r0
+    75a8:	20 81       	ld	r18, Z
+    75aa:	81 e0       	ldi	r24, 0x01	; 1
+    75ac:	90 e0       	ldi	r25, 0x00	; 0
+    75ae:	02 c0       	rjmp	.+4      	; 0x75b4 <DIO_vSetPinDirection+0x36>
+    75b0:	88 0f       	add	r24, r24
+    75b2:	99 1f       	adc	r25, r25
+    75b4:	6a 95       	dec	r22
+    75b6:	e2 f7       	brpl	.-8      	; 0x75b0 <DIO_vSetPinDirection+0x32>
+    75b8:	28 2b       	or	r18, r24
+    75ba:	20 83       	st	Z, r18
+    75bc:	13 c0       	rjmp	.+38     	; 0x75e4 <DIO_vSetPinDirection+0x66>
+    75be:	f0 e0       	ldi	r31, 0x00	; 0
+    75c0:	ee 0f       	add	r30, r30
+    75c2:	ff 1f       	adc	r31, r31
+    75c4:	e0 59       	subi	r30, 0x90	; 144
+    75c6:	ff 4f       	sbci	r31, 0xFF	; 255
+    75c8:	01 90       	ld	r0, Z+
+    75ca:	f0 81       	ld	r31, Z
+    75cc:	e0 2d       	mov	r30, r0
+    75ce:	20 81       	ld	r18, Z
+    75d0:	81 e0       	ldi	r24, 0x01	; 1
+    75d2:	90 e0       	ldi	r25, 0x00	; 0
+    75d4:	02 c0       	rjmp	.+4      	; 0x75da <DIO_vSetPinDirection+0x5c>
+    75d6:	88 0f       	add	r24, r24
+    75d8:	99 1f       	adc	r25, r25
+    75da:	6a 95       	dec	r22
+    75dc:	e2 f7       	brpl	.-8      	; 0x75d6 <DIO_vSetPinDirection+0x58>
+    75de:	80 95       	com	r24
+    75e0:	82 23       	and	r24, r18
+    75e2:	80 83       	st	Z, r24
+    75e4:	81 e0       	ldi	r24, 0x01	; 1
+    75e6:	08 95       	ret
+    75e8:	80 e0       	ldi	r24, 0x00	; 0
+    75ea:	08 95       	ret
 
-0000753c <EEP_vWriteByte>:
-    753c:	24 e0       	ldi	r18, 0x04	; 4
-    753e:	80 30       	cpi	r24, 0x00	; 0
-    7540:	92 07       	cpc	r25, r18
-    7542:	10 f0       	brcs	.+4      	; 0x7548 <EEP_vWriteByte+0xc>
-    7544:	80 e0       	ldi	r24, 0x00	; 0
-    7546:	08 95       	ret
-    7548:	9f bb       	out	0x1f, r25	; 31
-    754a:	8e bb       	out	0x1e, r24	; 30
-    754c:	6d bb       	out	0x1d, r22	; 29
-    754e:	e1 99       	sbic	0x1c, 1	; 28
-    7550:	fe cf       	rjmp	.-4      	; 0x754e <EEP_vWriteByte+0x12>
-    7552:	e2 9a       	sbi	0x1c, 2	; 28
-    7554:	e1 9a       	sbi	0x1c, 1	; 28
-    7556:	80 e2       	ldi	r24, 0x20	; 32
-    7558:	9e e4       	ldi	r25, 0x4E	; 78
-    755a:	01 97       	sbiw	r24, 0x01	; 1
-    755c:	f1 f7       	brne	.-4      	; 0x755a <EEP_vWriteByte+0x1e>
-    755e:	81 e0       	ldi	r24, 0x01	; 1
-    7560:	08 95       	ret
+000075ec <DIO_vSetPortValue>:
+    75ec:	e8 2f       	mov	r30, r24
+    75ee:	84 30       	cpi	r24, 0x04	; 4
+    75f0:	70 f4       	brcc	.+28     	; 0x760e <DIO_vSetPortValue+0x22>
+    75f2:	80 91 0a 01 	lds	r24, 0x010A
+    75f6:	81 30       	cpi	r24, 0x01	; 1
+    75f8:	51 f4       	brne	.+20     	; 0x760e <DIO_vSetPortValue+0x22>
+    75fa:	f0 e0       	ldi	r31, 0x00	; 0
+    75fc:	ee 0f       	add	r30, r30
+    75fe:	ff 1f       	adc	r31, r31
+    7600:	e8 59       	subi	r30, 0x98	; 152
+    7602:	ff 4f       	sbci	r31, 0xFF	; 255
+    7604:	01 90       	ld	r0, Z+
+    7606:	f0 81       	ld	r31, Z
+    7608:	e0 2d       	mov	r30, r0
+    760a:	60 83       	st	Z, r22
+    760c:	08 95       	ret
+    760e:	80 e0       	ldi	r24, 0x00	; 0
+    7610:	08 95       	ret
 
-00007562 <EEP_vReadByte>:
-    7562:	fb 01       	movw	r30, r22
-    7564:	24 e0       	ldi	r18, 0x04	; 4
-    7566:	80 30       	cpi	r24, 0x00	; 0
-    7568:	92 07       	cpc	r25, r18
-    756a:	10 f0       	brcs	.+4      	; 0x7570 <EEP_vReadByte+0xe>
-    756c:	80 e0       	ldi	r24, 0x00	; 0
-    756e:	08 95       	ret
-    7570:	9f bb       	out	0x1f, r25	; 31
-    7572:	8e bb       	out	0x1e, r24	; 30
-    7574:	e1 99       	sbic	0x1c, 1	; 28
-    7576:	fe cf       	rjmp	.-4      	; 0x7574 <EEP_vReadByte+0x12>
-    7578:	e0 9a       	sbi	0x1c, 0	; 28
-    757a:	8d b3       	in	r24, 0x1d	; 29
-    757c:	80 83       	st	Z, r24
-    757e:	81 e0       	ldi	r24, 0x01	; 1
-    7580:	08 95       	ret
+00007612 <DIO_vSetPinValue>:
+    7612:	e8 2f       	mov	r30, r24
+    7614:	84 30       	cpi	r24, 0x04	; 4
+    7616:	90 f5       	brcc	.+100    	; 0x767c <DIO_vSetPinValue+0x6a>
+    7618:	68 30       	cpi	r22, 0x08	; 8
+    761a:	80 f5       	brcc	.+96     	; 0x767c <DIO_vSetPinValue+0x6a>
+    761c:	80 91 0a 01 	lds	r24, 0x010A
+    7620:	81 30       	cpi	r24, 0x01	; 1
+    7622:	61 f5       	brne	.+88     	; 0x767c <DIO_vSetPinValue+0x6a>
+    7624:	44 23       	and	r20, r20
+    7626:	a9 f0       	breq	.+42     	; 0x7652 <DIO_vSetPinValue+0x40>
+    7628:	41 30       	cpi	r20, 0x01	; 1
+    762a:	41 f5       	brne	.+80     	; 0x767c <DIO_vSetPinValue+0x6a>
+    762c:	f0 e0       	ldi	r31, 0x00	; 0
+    762e:	ee 0f       	add	r30, r30
+    7630:	ff 1f       	adc	r31, r31
+    7632:	e8 59       	subi	r30, 0x98	; 152
+    7634:	ff 4f       	sbci	r31, 0xFF	; 255
+    7636:	01 90       	ld	r0, Z+
+    7638:	f0 81       	ld	r31, Z
+    763a:	e0 2d       	mov	r30, r0
+    763c:	20 81       	ld	r18, Z
+    763e:	81 e0       	ldi	r24, 0x01	; 1
+    7640:	90 e0       	ldi	r25, 0x00	; 0
+    7642:	02 c0       	rjmp	.+4      	; 0x7648 <DIO_vSetPinValue+0x36>
+    7644:	88 0f       	add	r24, r24
+    7646:	99 1f       	adc	r25, r25
+    7648:	6a 95       	dec	r22
+    764a:	e2 f7       	brpl	.-8      	; 0x7644 <DIO_vSetPinValue+0x32>
+    764c:	28 2b       	or	r18, r24
+    764e:	20 83       	st	Z, r18
+    7650:	13 c0       	rjmp	.+38     	; 0x7678 <DIO_vSetPinValue+0x66>
+    7652:	f0 e0       	ldi	r31, 0x00	; 0
+    7654:	ee 0f       	add	r30, r30
+    7656:	ff 1f       	adc	r31, r31
+    7658:	e8 59       	subi	r30, 0x98	; 152
+    765a:	ff 4f       	sbci	r31, 0xFF	; 255
+    765c:	01 90       	ld	r0, Z+
+    765e:	f0 81       	ld	r31, Z
+    7660:	e0 2d       	mov	r30, r0
+    7662:	20 81       	ld	r18, Z
+    7664:	81 e0       	ldi	r24, 0x01	; 1
+    7666:	90 e0       	ldi	r25, 0x00	; 0
+    7668:	02 c0       	rjmp	.+4      	; 0x766e <DIO_vSetPinValue+0x5c>
+    766a:	88 0f       	add	r24, r24
+    766c:	99 1f       	adc	r25, r25
+    766e:	6a 95       	dec	r22
+    7670:	e2 f7       	brpl	.-8      	; 0x766a <DIO_vSetPinValue+0x58>
+    7672:	80 95       	com	r24
+    7674:	82 23       	and	r24, r18
+    7676:	80 83       	st	Z, r24
+    7678:	81 e0       	ldi	r24, 0x01	; 1
+    767a:	08 95       	ret
+    767c:	80 e0       	ldi	r24, 0x00	; 0
+    767e:	08 95       	ret
 
-00007582 <_exit>:
-    7582:	f8 94       	cli
+00007680 <DIO_u8GetPortValue>:
+    7680:	e8 2f       	mov	r30, r24
+    7682:	db 01       	movw	r26, r22
+    7684:	84 30       	cpi	r24, 0x04	; 4
+    7686:	80 f4       	brcc	.+32     	; 0x76a8 <DIO_u8GetPortValue+0x28>
+    7688:	80 91 0a 01 	lds	r24, 0x010A
+    768c:	81 30       	cpi	r24, 0x01	; 1
+    768e:	61 f4       	brne	.+24     	; 0x76a8 <DIO_u8GetPortValue+0x28>
+    7690:	f0 e0       	ldi	r31, 0x00	; 0
+    7692:	ee 0f       	add	r30, r30
+    7694:	ff 1f       	adc	r31, r31
+    7696:	e0 5a       	subi	r30, 0xA0	; 160
+    7698:	ff 4f       	sbci	r31, 0xFF	; 255
+    769a:	01 90       	ld	r0, Z+
+    769c:	f0 81       	ld	r31, Z
+    769e:	e0 2d       	mov	r30, r0
+    76a0:	80 81       	ld	r24, Z
+    76a2:	8c 93       	st	X, r24
+    76a4:	81 e0       	ldi	r24, 0x01	; 1
+    76a6:	08 95       	ret
+    76a8:	80 e0       	ldi	r24, 0x00	; 0
+    76aa:	08 95       	ret
 
-00007584 <__stop_program>:
-    7584:	ff cf       	rjmp	.-2      	; 0x7584 <__stop_program>
+000076ac <DIO_u8GetPinValue>:
+    76ac:	e8 2f       	mov	r30, r24
+    76ae:	da 01       	movw	r26, r20
+    76b0:	84 30       	cpi	r24, 0x04	; 4
+    76b2:	c8 f4       	brcc	.+50     	; 0x76e6 <DIO_u8GetPinValue+0x3a>
+    76b4:	68 30       	cpi	r22, 0x08	; 8
+    76b6:	b8 f4       	brcc	.+46     	; 0x76e6 <DIO_u8GetPinValue+0x3a>
+    76b8:	80 91 0a 01 	lds	r24, 0x010A
+    76bc:	81 30       	cpi	r24, 0x01	; 1
+    76be:	99 f4       	brne	.+38     	; 0x76e6 <DIO_u8GetPinValue+0x3a>
+    76c0:	f0 e0       	ldi	r31, 0x00	; 0
+    76c2:	ee 0f       	add	r30, r30
+    76c4:	ff 1f       	adc	r31, r31
+    76c6:	e0 5a       	subi	r30, 0xA0	; 160
+    76c8:	ff 4f       	sbci	r31, 0xFF	; 255
+    76ca:	01 90       	ld	r0, Z+
+    76cc:	f0 81       	ld	r31, Z
+    76ce:	e0 2d       	mov	r30, r0
+    76d0:	80 81       	ld	r24, Z
+    76d2:	90 e0       	ldi	r25, 0x00	; 0
+    76d4:	02 c0       	rjmp	.+4      	; 0x76da <DIO_u8GetPinValue+0x2e>
+    76d6:	95 95       	asr	r25
+    76d8:	87 95       	ror	r24
+    76da:	6a 95       	dec	r22
+    76dc:	e2 f7       	brpl	.-8      	; 0x76d6 <DIO_u8GetPinValue+0x2a>
+    76de:	81 70       	andi	r24, 0x01	; 1
+    76e0:	8c 93       	st	X, r24
+    76e2:	81 e0       	ldi	r24, 0x01	; 1
+    76e4:	08 95       	ret
+    76e6:	80 e0       	ldi	r24, 0x00	; 0
+    76e8:	08 95       	ret
+
+000076ea <_exit>:
+    76ea:	f8 94       	cli
+
+000076ec <__stop_program>:
+    76ec:	ff cf       	rjmp	.-2      	; 0x76ec <__stop_program>
